@@ -18,7 +18,6 @@ import { optionsFieldsSelector } from './utils';
 import Sidebar from './Sidebar';
 import FrequencySidebar from './FrequencySidebar';
 import SegmentationSidebar from './SegmentationSidebar';
-import DismissSidebar from './DismissSidebar';
 import ColorsSidebar from './ColorsSidebar';
 import AdvancedSidebar from './AdvancedSidebar';
 import Preview from './Preview';
@@ -31,8 +30,10 @@ import './style.scss';
 const mapDispatchToProps = dispatch => {
 	const { createNotice, removeNotice } = dispatch( 'core/notices' );
 	return {
-		onMetaFieldChange: ( key, value ) => {
-			dispatch( 'core/editor' ).editPost( { meta: { [ key ]: value } } );
+		onMetaFieldChange: ( metaToUpdate = {} ) => {
+			if ( 0 < Object.keys( metaToUpdate ).length ) {
+				dispatch( 'core/editor' ).editPost( { meta: metaToUpdate } );
+			}
 		},
 		createNotice,
 		removeNotice,
@@ -48,7 +49,6 @@ const connectData = compose( [
 const SidebarWithData = connectData( Sidebar );
 const FrequencySidebarWithData = connectData( FrequencySidebar );
 const SegmentationSidebarWithData = connectData( SegmentationSidebar );
-const DismissSidebarWithData = connectData( DismissSidebar );
 const ColorsSidebarWithData = connectData( ColorsSidebar );
 const PostTypesPanelWithData = connectData( PostTypesPanel );
 const AdvancedSidebarWithData = connectData( AdvancedSidebar );
@@ -85,18 +85,6 @@ registerPlugin( 'newspack-popups-segmentation', {
 			title={ __( 'Segmentation Settings', 'newspack-popups' ) }
 		>
 			<SegmentationSidebarWithData />
-		</PluginDocumentSettingPanel>
-	),
-	icon: null,
-} );
-
-registerPlugin( 'newspack-popups-dismiss', {
-	render: () => (
-		<PluginDocumentSettingPanel
-			name="popup-dismiss-panel"
-			title={ __( 'Dismiss Button Settings', 'newspack-popups' ) }
-		>
-			<DismissSidebarWithData />
 		</PluginDocumentSettingPanel>
 	),
 	icon: null,

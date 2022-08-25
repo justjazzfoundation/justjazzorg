@@ -380,7 +380,7 @@ final class Newspack_Popups_Inserter {
 				$position          = $inline_popup['precise_position'];
 				$trigger_type      = $inline_popup['options']['trigger_type'];
 				$insert_at_zero    = 0 === $position; // If the position is 0, the prompt should always appear first.
-				$insert_for_scroll = 'scroll' === $trigger_type && $pos > $position;
+				$insert_for_scroll = 'blocks_count' !== $trigger_type && $pos > $position;
 				$insert_for_blocks = 'blocks_count' === $trigger_type && $block_index >= $position;
 
 				if ( $insert_at_zero || $insert_for_scroll || $insert_for_blocks ) {
@@ -595,18 +595,18 @@ final class Newspack_Popups_Inserter {
 	 * @param object $popup A popup.
 	 */
 	public static function create_single_popup_access_payload( $popup ) {
-		$popup_id_string = Newspack_Popups_Model::canonize_popup_id( esc_attr( $popup['id'] ) );
-		$frequency       = $popup['options']['frequency'];
-		$is_overlay      = Newspack_Popups_Model::is_overlay( $popup );
-		$is_above_header = Newspack_Popups_Model::is_above_header( $popup );
-		$type            = 'i';
+		$popup_id_string   = Newspack_Popups_Model::canonize_popup_id( esc_attr( $popup['id'] ) );
+		$frequency         = $popup['options']['frequency'];
+		$frequency_max     = $popup['options']['frequency_max'];
+		$frequency_start   = $popup['options']['frequency_start'];
+		$frequency_between = $popup['options']['frequency_between'];
+		$frequency_reset   = $popup['options']['frequency_reset'];
+		$is_overlay        = Newspack_Popups_Model::is_overlay( $popup );
+		$is_above_header   = Newspack_Popups_Model::is_above_header( $popup );
+		$type              = 'i';
 
 		if ( $is_overlay ) {
 			$type = 'o';
-
-			if ( 'always' === $frequency ) {
-				$frequency = 'once';
-			}
 		}
 
 		if ( $is_above_header ) {
@@ -616,14 +616,16 @@ final class Newspack_Popups_Inserter {
 		$popup_payload = [
 			'id'  => $popup_id_string,
 			'f'   => $frequency,
+			'fm'  => $frequency_max,
+			'fs'  => $frequency_start,
+			'fb'  => $frequency_between,
+			'ft'  => $frequency_reset,
 			'utm' => $popup['options']['utm_suppression'],
 			's'   => $popup['options']['selected_segment_id'],
-			'n'   => \Newspack_Popups_Model::has_newsletter_prompt( $popup ),
-			'd'   => \Newspack_Popups_Model::has_donation_block( $popup ),
 			't'   => $type,
 		];
 
-		if ( Newspack_Popups_Custom_Placements::is_custom_placement_or_manual( $popup ) ) {
+		if ( \Newspack_Popups_Custom_Placements::is_custom_placement_or_manual( $popup ) ) {
 			$popup_payload['c'] = $popup['options']['placement'];
 		}
 
@@ -642,9 +644,6 @@ final class Newspack_Popups_Inserter {
 	 * make reliable retrieval problematic.
 	 */
 	public static function insert_popups_amp_access() {
-		if ( ! Newspack_Popups_Segmentation::is_tracking() ) {
-			return;
-		}
 		$popups = array_filter(
 			Newspack_Popups_Model::retrieve_popups(
 				// Include drafts if it's a preview request.
@@ -729,20 +728,6 @@ final class Newspack_Popups_Inserter {
 			$popups_configs[] = self::create_single_popup_access_payload( $popup );
 		}
 
-		$categories   = get_the_category();
-		$category_ids = '';
-		if ( ! empty( $categories ) ) {
-			$category_ids = implode(
-				',',
-				array_map(
-					function( $cat ) {
-						return $cat->term_id;
-					},
-					$categories
-				)
-			);
-		}
-
 		$settings = $previewed_popup_id ? [] : array_reduce(
 			\Newspack_Popups_Settings::get_settings( false, true ),
 			function ( $acc, $item ) {
@@ -753,16 +738,66 @@ final class Newspack_Popups_Inserter {
 			(object) []
 		);
 
+		// Info on the current pageview/visit.
+		$visit = [];
+
+		if ( is_singular() ) {
+			$visit['post_type'] = get_post_type();
+			$visit['post_id']   = get_the_ID();
+
+			$categories   = get_the_category();
+			$category_ids = '';
+			if ( ! empty( $categories ) ) {
+				$category_ids = implode(
+					',',
+					array_map(
+						function( $cat ) {
+							return $cat->term_id;
+						},
+						$categories
+					)
+				);
+			}
+
+			if ( ! empty( $category_ids ) ) {
+				$visit['categories'] = esc_attr( $category_ids );
+			}
+		} else {
+			global $wp;
+			$non_singular_query_type = 'unknown';
+			$request                 = $wp->query_vars;
+
+			if ( is_archive() ) {
+				$non_singular_query_type = 'archive';
+			}
+			if ( is_search() ) {
+				$non_singular_query_type = 'search';
+			}
+			if ( is_feed() ) {
+				$non_singular_query_type = 'feed';
+			}
+			if ( is_home() ) {
+				$non_singular_query_type = 'posts_page';
+			}
+			if ( is_404() ) {
+				$non_singular_query_type = '404';
+			}
+
+			$visit['request']      = $request;
+			$visit['request_type'] = $non_singular_query_type;
+		}
+
 		$popups_access_provider['authorization'] .= '&ref=DOCUMENT_REFERRER';
 		$popups_access_provider['authorization'] .= '&popups=' . wp_json_encode( $popups_configs );
 		$popups_access_provider['authorization'] .= '&settings=' . wp_json_encode( $settings );
-		$popups_access_provider['authorization'] .= '&visit=' . wp_json_encode(
-			[
-				'post_id'    => esc_attr( get_the_ID() ),
-				'categories' => esc_attr( $category_ids ),
-				'is_post'    => is_single(),
-			]
-		);
+		$popups_access_provider['authorization'] .= '&visit=' . wp_json_encode( $visit );
+
+		// Handle user accounts.
+		$user_id = get_current_user_id();
+		if ( ! empty( $user_id ) ) {
+			$popups_access_provider['authorization'] .= '&uid=' . absint( $user_id );
+		}
+
 		if ( isset( $_GET['newspack-campaigns-debug'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			$popups_access_provider['authorization'] .= '&debug';
 		}
@@ -877,23 +912,24 @@ final class Newspack_Popups_Inserter {
 	 * @return bool Whether the prompt should be shown based on matching terms.
 	 */
 	public static function assess_taxonomy_filter( $popup, $taxonomy = 'category' ) {
+		// If a preview request, ensure the prompt appears in the first post loaded in the preview window.
+		if ( Newspack_Popups::is_preview_request() ) {
+			return true;
+		}
+
 		$post_terms     = get_the_terms( get_the_ID(), $taxonomy );
-		$post_terms_ids = array_column( $post_terms ? $post_terms : [], 'term_id' );
+		$post_terms_ids = $post_terms ? array_column( $post_terms, 'term_id' ) : [];
 
 		// Check if a post term is excluded on the popup options.
 		if ( 'category' === $taxonomy ) {
-			foreach ( $popup['options']['excluded_categories'] as $category_excluded_id ) {
-				if ( in_array( $category_excluded_id, $post_terms_ids ) ) {
-					return false;
-				}
+			if ( 0 < count( array_intersect( $popup['options']['excluded_categories'], $post_terms_ids ) ) ) {
+				return false;
 			}
 		}
 
 		if ( 'post_tag' === $taxonomy ) {
-			foreach ( $popup['options']['excluded_tags'] as $post_tag_excluded_id ) {
-				if ( in_array( $post_tag_excluded_id, $post_terms_ids ) ) {
-					return false;
-				}
+			if ( 0 < count( array_intersect( $popup['options']['excluded_tags'], $post_terms_ids ) ) ) {
+				return false;
 			}
 		}
 
@@ -919,12 +955,8 @@ final class Newspack_Popups_Inserter {
 
 		// Unless it's a preview request, perform some additional checks.
 		if ( ! Newspack_Popups::is_preview_request() ) {
-			// Hide prompts for admin users.
-			if ( Newspack_Popups::is_user_admin() ) {
-				return false;
-			}
-			// Hide overlay prompts in non-interactive mode, for non-admin users.
-			if ( ! Newspack_Popups::is_user_admin() && Newspack_Popups_Settings::is_non_interactive() && ! Newspack_Popups_Model::is_inline( $popup ) ) {
+			// Hide overlay prompts in non-interactive mode.
+			if ( Newspack_Popups_Settings::is_non_interactive() && ! Newspack_Popups_Model::is_inline( $popup ) ) {
 				return false;
 			}
 		}

@@ -13,7 +13,9 @@ class Newspack_Blocks {
 	/**
 	 * Script handle for the streamlined donate block script.
 	 */
-	const DONATE_STREAMLINED_SCRIPT_HANDLE = 'newspack-blocks-donate-streamlined';
+	const DONATE_STREAMLINED_SCRIPT_HANDLE     = 'newspack-blocks-donate-streamlined';
+	const DONATE_STREAMLINED_CAPTCHA_HANDLE    = 'newspack-blocks-recaptcha';
+	const DONATE_STREAMLINED_CAPTCHA_THRESHOLD = 0.5;
 
 	/**
 	 * Regex pattern we can use to search for and remove custom SQL statements.
@@ -75,7 +77,7 @@ class Newspack_Blocks {
 	 * @param string $handle The script handle.
 	 */
 	public static function mark_view_script_as_amp_plus_allowed( $tag, $handle ) {
-		if ( self::DONATE_STREAMLINED_SCRIPT_HANDLE === $handle ) {
+		if ( self::DONATE_STREAMLINED_SCRIPT_HANDLE === $handle || self::DONATE_STREAMLINED_CAPTCHA_HANDLE === $handle ) {
 			return str_replace( '<script', '<script data-amp-plus-allowed', $tag );
 		}
 		return $tag;
@@ -143,13 +145,6 @@ class Newspack_Blocks {
 	}
 
 	/**
-	 * Path of the Stripe badge file.
-	 */
-	public static function streamlined_block_stripe_badge() {
-		return plugins_url( '/src/assets', NEWSPACK_BLOCKS__PLUGIN_FILE ) . '/stripe-badge.svg';
-	}
-
-	/**
 	 * Possible mimes for iframe archive source file.
 	 */
 	public static function iframe_archive_accepted_file_mimes() {
@@ -183,6 +178,27 @@ class Newspack_Blocks {
 	}
 
 	/**
+	 * Enqueue placeholder blocks assets.
+	 */
+	public static function enqueue_placeholder_blocks_assets() {
+		$script_data = self::script_enqueue_helper( NEWSPACK_BLOCKS__BLOCKS_DIRECTORY . 'placeholder_blocks.js' );
+		if ( $script_data ) {
+			wp_enqueue_script(
+				'newspack-blocks-placeholder-blocks',
+				$script_data['script_path'],
+				$script_data['dependencies'],
+				$script_data['version'],
+				true
+			);
+			wp_set_script_translations(
+				'newspack-blocks-placeholder-blocks',
+				'newspack-blocks',
+				plugin_dir_path( NEWSPACK_BLOCKS__PLUGIN_FILE ) . 'languages'
+			);
+		}
+	}
+
+	/**
 	 * Enqueue block scripts and styles for editor.
 	 */
 	public static function enqueue_block_editor_assets() {
@@ -205,7 +221,6 @@ class Newspack_Blocks {
 				'assets_path'                    => plugins_url( '/src/assets', NEWSPACK_BLOCKS__PLUGIN_FILE ),
 				'post_subtitle'                  => get_theme_support( 'post-subtitle' ),
 				'is_rendering_streamlined_block' => self::is_rendering_streamlined_block(),
-				'streamlined_block_stripe_badge' => self::streamlined_block_stripe_badge(),
 				'iframe_accepted_file_mimes'     => self::iframe_accepted_file_mimes(),
 			];
 
@@ -527,7 +542,11 @@ class Newspack_Blocks {
 			);
 		}
 
-		$post_type           = isset( $attributes['postType'] ) ? $attributes['postType'] : [ 'post' ];
+		$post_type              = isset( $attributes['postType'] ) ? $attributes['postType'] : [ 'post' ];
+		$included_post_statuses = [ 'publish' ];
+		if ( current_user_can( 'edit_others_posts' ) && isset( $attributes['includedPostStatuses'] ) ) {
+			$included_post_statuses = $attributes['includedPostStatuses'];
+		}
 		$authors             = isset( $attributes['authors'] ) ? $attributes['authors'] : array();
 		$categories          = isset( $attributes['categories'] ) ? $attributes['categories'] : array();
 		$tags                = isset( $attributes['tags'] ) ? $attributes['tags'] : array();
@@ -538,7 +557,7 @@ class Newspack_Blocks {
 		$specific_mode       = isset( $attributes['specificMode'] ) ? intval( $attributes['specificMode'] ) : false;
 		$args                = array(
 			'post_type'           => $post_type,
-			'post_status'         => 'publish',
+			'post_status'         => $included_post_statuses,
 			'suppress_filters'    => false,
 			'ignore_sticky_posts' => true,
 			'has_password'        => false,
@@ -740,11 +759,6 @@ class Newspack_Blocks {
 			}
 		}
 
-		$post_format = get_post_format( $post_id );
-		if ( false !== $post_format ) {
-			$classes[] = 'format-' . $post_format;
-		}
-
 		$post_type = get_post_type( $post_id );
 		if ( false !== $post_type ) {
 			$classes[] = 'type-' . $post_type;
@@ -816,6 +830,20 @@ class Newspack_Blocks {
 		'maxheight' => 40,
 	) ) {
 		if ( function_exists( '\Newspack_Sponsors\get_sponsors_for_post' ) ) {
+			if ( is_singular() ) {
+				$scope_override = get_post_meta( $id, 'newspack_sponsor_sponsorship_scope', true );
+
+				// Scope override: if post is set to display as native-sponsored, return all sponsors.
+				if ( 'native' === $scope_override ) {
+					$scope = null;
+				}
+
+				// Scope override: if post is set to display as underwritten, return nothing.
+				if ( 'underwritten' === $scope_override ) {
+					return [];
+				}
+			}
+
 			return \Newspack_Sponsors\get_all_sponsors( $id, $scope, $type, $logo_options ); // phpcs:ignore PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound
 		}
 
@@ -921,6 +949,34 @@ class Newspack_Blocks {
 			return $sponsor_logos;
 		}
 
+		return false;
+	}
+
+	/**
+	 * If at least one native sponsor is set to display both sponsors and authors, show the authors.
+	 *
+	 * @param array $sponsors Array of sponsors.
+	 *
+	 * @return boolean True if we should display both sponsors and categories, false if we should display only sponsors.
+	 */
+	public static function newspack_display_sponsors_and_authors( $sponsors ) {
+		if ( function_exists( '\Newspack_Sponsors\newspack_display_sponsors_and_authors' ) ) {
+			return \Newspack_Sponsors\newspack_display_sponsors_and_authors( $sponsors );
+		}
+		return false;
+	}
+
+	/**
+	 * If at least one native sponsor is set to display both sponsors and categories, show the categories.
+	 *
+	 * @param array $sponsors Array of sponsors.
+	 *
+	 * @return boolean True if we should display both sponsors and categories, false if we should display only sponsors.
+	 */
+	public static function newspack_display_sponsors_and_categories( $sponsors ) {
+		if ( function_exists( '\Newspack_Sponsors\newspack_display_sponsors_and_categories' ) ) {
+			return \Newspack_Sponsors\newspack_display_sponsors_and_categories( $sponsors );
+		}
 		return false;
 	}
 
@@ -1229,7 +1285,7 @@ class Newspack_Blocks {
 
 		// Allow Jetpack donations if Newspack donations isn't set up.
 		$donate_settings = Newspack\Donations::get_donation_settings();
-		if ( is_wp_error( $donate_settings ) || ! $donate_settings['created'] ) {
+		if ( is_wp_error( $donate_settings ) ) {
 			return;
 		}
 
@@ -1262,5 +1318,65 @@ class Newspack_Blocks {
 		ob_end_clean();
 		return $contents;
 	}
+
+	/**
+	 * Get post status label.
+	 */
+	public static function get_post_status_label() {
+		$post_status          = get_post_status();
+		$post_statuses_labels = [
+			'draft'  => __( 'Draft', 'newspack-blocks' ),
+			'future' => __( 'Scheduled', 'newspack-blocks' ),
+		];
+		if ( 'publish' !== $post_status ) {
+			ob_start();
+			?>
+				<div class="newspack-preview-label"><?php echo esc_html( $post_statuses_labels[ $post_status ] ); ?></div>
+			<?php
+			return ob_get_clean();
+		}
+	}
+
+	/**
+	 * Pick either white or black, whatever has sufficient contrast with the color being passed to it.
+	 * From Newspack Theme functions.
+	 *
+	 * @param  string $hex Hexidecimal value of the color to adjust.
+	 * @return string Either black or white hexidecimal values.
+	 *
+	 * @ref https://stackoverflow.com/questions/1331591/given-a-background-color-black-or-white-text
+	 */
+	public static function get_color_for_contrast( $hex ) {
+		// Hex RGB.
+		$r1 = hexdec( substr( $hex, 1, 2 ) );
+		$g1 = hexdec( substr( $hex, 3, 2 ) );
+		$b1 = hexdec( substr( $hex, 5, 2 ) );
+		// Black RGB.
+		$black_color    = '#000';
+		$r2_black_color = hexdec( substr( $black_color, 1, 2 ) );
+		$g2_black_color = hexdec( substr( $black_color, 3, 2 ) );
+		$b2_black_color = hexdec( substr( $black_color, 5, 2 ) );
+		// Calc contrast ratio.
+		$l1             = 0.2126 * pow( $r1 / 255, 2.2 ) +
+		0.7152 * pow( $g1 / 255, 2.2 ) +
+		0.0722 * pow( $b1 / 255, 2.2 );
+		$l2             = 0.2126 * pow( $r2_black_color / 255, 2.2 ) +
+		0.7152 * pow( $g2_black_color / 255, 2.2 ) +
+		0.0722 * pow( $b2_black_color / 255, 2.2 );
+		$contrast_ratio = 0;
+		if ( $l1 > $l2 ) {
+			$contrast_ratio = (int) ( ( $l1 + 0.05 ) / ( $l2 + 0.05 ) );
+		} else {
+			$contrast_ratio = (int) ( ( $l2 + 0.05 ) / ( $l1 + 0.05 ) );
+		}
+		if ( $contrast_ratio > 5 ) {
+			// If contrast is more than 5, return black color.
+			return 'black';
+		} else {
+			// if not, return white color.
+			return 'white';
+		}
+	}
+
 }
 Newspack_Blocks::init();

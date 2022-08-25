@@ -10,7 +10,9 @@ import {
 	formatByline,
 	formatSponsorLogos,
 	formatSponsorByline,
+	getPostStatusLabel,
 } from '../../shared/js/utils';
+import { PostTypesPanel, PostStatusesPanel } from '../../components/editor-panels';
 
 /**
  * External dependencies
@@ -35,7 +37,6 @@ import {
 import {
 	Button,
 	ButtonGroup,
-	CheckboxControl,
 	PanelBody,
 	PanelRow,
 	RangeControl,
@@ -146,6 +147,7 @@ class Edit extends Component {
 		const dateFormat = __experimentalGetSettings().formats.date;
 		return (
 			<article className={ postClasses } key={ post.id } style={ styles }>
+				{ getPostStatusLabel( post ) }
 				{ showImage && post.newspack_featured_image_src && (
 					<figure className="post-thumbnail" key="thumbnail">
 						<a href="#">
@@ -169,25 +171,27 @@ class Edit extends Component {
 				) }
 
 				<div className="entry-wrapper">
-					{ post.newspack_post_sponsors && (
-						<span className="cat-links sponsor-label">
-							<span className="flag">{ post.newspack_post_sponsors[ 0 ].flag }</span>
-						</span>
-					) }
-					{ showCategory &&
+					{ ( post.newspack_post_sponsors || showCategory ) &&
 						0 < post.newspack_category_info.length &&
-						! post.newspack_post_sponsors && (
-							<div className="cat-links">
-								<a href="#">{ decodeEntities( post.newspack_category_info ) }</a>
+						( ! post.newspack_post_sponsors || post.newspack_sponsors_show_categories ) && (
+							<div
+								className={ 'cat-links' + ( post.newspack_post_sponsors ? ' sponsor-label' : '' ) }
+							>
+								{ post.newspack_post_sponsors && (
+									<span className="flag">{ post.newspack_post_sponsors[ 0 ].flag }</span>
+								) }
+								{ showCategory && (
+									<a href="#">{ decodeEntities( post.newspack_category_info ) }</a>
+								) }
 							</div>
 						) }
 					{ RichText.isEmpty( sectionHeader ) ? (
 						<h2 className="entry-title" key="title">
-							{ post.newspack_post_format === 'aside' ? postTitle : <a href="#">{ postTitle }</a> }
+							<a href="#">{ postTitle }</a>
 						</h2>
 					) : (
 						<h3 className="entry-title" key="title">
-							{ post.newspack_post_format === 'aside' ? postTitle : <a href="#">{ postTitle }</a> }
+							<a href="#">{ postTitle }</a>
 						</h3>
 					) }
 					{ IS_SUBTITLE_SUPPORTED_IN_THEME && showSubtitle && (
@@ -200,9 +204,7 @@ class Edit extends Component {
 					) }
 					{ showExcerpt && (
 						<RawHTML key="excerpt" className="excerpt-contain">
-							{ post.newspack_post_format === 'aside'
-								? post.content.rendered
-								: post.excerpt.rendered }
+							{ post.excerpt.rendered }
 						</RawHTML>
 					) }
 					{ showReadMore && post.post_link && (
@@ -211,17 +213,28 @@ class Edit extends Component {
 						</a>
 					) }
 					<div className="entry-meta">
-						{ post.newspack_post_sponsors && formatSponsorLogos( post.newspack_post_sponsors ) }
-						{ post.newspack_post_sponsors && formatSponsorByline( post.newspack_post_sponsors ) }
+						{ post.newspack_post_sponsors && (
+							<span
+								className={ `entry-sponsors ${
+									post.newspack_sponsors_show_author ? 'plus-author' : ''
+								}` }
+							>
+								{ formatSponsorLogos( post.newspack_post_sponsors ) }
+								{ formatSponsorByline( post.newspack_post_sponsors ) }
+							</span>
+						) }
+
 						{ showAuthor &&
 							! post.newspack_listings_hide_author &&
 							showAvatar &&
-							! post.newspack_post_sponsors &&
+							( ! post.newspack_post_sponsors || post.newspack_sponsors_show_author ) &&
 							formatAvatars( post.newspack_author_info ) }
+
 						{ showAuthor &&
 							! post.newspack_listings_hide_author &&
-							! post.newspack_post_sponsors &&
+							( ! post.newspack_post_sponsors || post.newspack_sponsors_show_author ) &&
 							formatByline( post.newspack_author_info ) }
+
 						{ showDate && ! post.newspack_listings_hide_publish_date && (
 							<time className="entry-date published" key="pub-date">
 								{ dateI18n( dateFormat, post.date_gmt ) }
@@ -246,7 +259,7 @@ class Edit extends Component {
 	};
 
 	renderInspectorControls = () => {
-		const { attributes, availablePostTypes, setAttributes, textColor, setTextColor } = this.props;
+		const { attributes, setAttributes, textColor, setTextColor } = this.props;
 
 		const {
 			authors,
@@ -556,28 +569,8 @@ class Edit extends Component {
 						</PanelRow>
 					) }
 				</PanelBody>
-				<PanelBody title={ __( 'Post Types', 'newspack-blocks' ) }>
-					{ availablePostTypes &&
-						availablePostTypes.map( ( { name, slug } ) => (
-							<PanelRow key={ slug }>
-								<CheckboxControl
-									label={ name }
-									checked={ postType.indexOf( slug ) > -1 }
-									onChange={ value => {
-										const cleanPostType = [ ...new Set( postType ) ];
-										if ( value && cleanPostType.indexOf( slug ) === -1 ) {
-											cleanPostType.push( slug );
-										} else if ( ! value && cleanPostType.indexOf( slug ) > -1 ) {
-											cleanPostType.splice( cleanPostType.indexOf( slug ), 1 );
-										}
-										setAttributes( {
-											postType: cleanPostType,
-										} );
-									} }
-								/>
-							</PanelRow>
-						) ) }
-				</PanelBody>
+				<PostTypesPanel attributes={ attributes } setAttributes={ setAttributes } />
+				<PostStatusesPanel attributes={ attributes } setAttributes={ setAttributes } />
 			</Fragment>
 		);
 	};
@@ -599,15 +592,8 @@ class Edit extends Component {
 		 * Constants
 		 */
 
-		const {
-			attributes,
-			className,
-			setAttributes,
-			isSelected,
-			latestPosts,
-			textColor,
-			error,
-		} = this.props;
+		const { attributes, className, setAttributes, isSelected, latestPosts, textColor, error } =
+			this.props;
 
 		const {
 			showImage,
@@ -758,7 +744,6 @@ class Edit extends Component {
 								value={ moreButtonText }
 								onChange={ value => setAttributes( { moreButtonText: value } ) }
 								className="wp-block-button__link"
-								keepPlaceholderOnFocus
 								allowedFormats={ [] }
 							/>
 						</div>

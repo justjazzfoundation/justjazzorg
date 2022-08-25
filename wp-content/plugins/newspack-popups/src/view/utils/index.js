@@ -71,8 +71,8 @@ export const parseDynamicURL = url => {
 export const processFormData = ( data, formElement ) => {
 	Object.keys( data ).forEach( key => {
 		let value = data[ key ];
-		if ( value === '${formFields[email]}' ) {
-			const inputEl = formElement.querySelector( '[name="email"]' );
+		if ( -1 < value.indexOf( '${formFields' ) ) {
+			const inputEl = formElement.querySelector( '[name="email"], [type="email"]' );
 			if ( inputEl ) {
 				value = inputEl.value;
 			}
@@ -127,7 +127,7 @@ export const getCookieValueFromLinker = (
 		}
 
 		if ( linkerParam && ! hasCIDCookie ) {
-			// eslint-disable-next-line no-unused-vars
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const [ version, checksum, cidName, cidValue ] = linkerParam.split( '*' );
 			try {
 				// Strip dots, not sure why they were in a URL – maybe chrome devtools?

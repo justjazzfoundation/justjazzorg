@@ -42,12 +42,6 @@ $size__large: 1264px;
 		}
 	}
 
-	&__not-interested-button-preview {
-		cursor: not-allowed;
-		font-size: 0.7em;
-		text-decoration: underline;
-	}
-
 	&__segmentation-sidebar {
 		.components-form-token-field__help {
 			display: none;
@@ -69,6 +63,19 @@ $size__large: 1264px;
 
 		.components-flex {
 			margin-top: 24px;
+		}
+	}
+
+	&__frequency-number-control.components-number-control {
+		align-items: center;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		margin-bottom: 8px;
+		width: 100%;
+
+		.components-input-control__container {
+			max-width: 25%;
 		}
 	}
 }

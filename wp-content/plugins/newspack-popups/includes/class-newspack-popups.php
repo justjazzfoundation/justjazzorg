@@ -22,23 +22,26 @@ final class Newspack_Popups {
 	const LIGHTWEIGHT_API_CONFIG_FILE_PATH        = WP_CONTENT_DIR . '/newspack-popups-config.php';
 
 	const PREVIEW_QUERY_KEYS = [
-		'background_color'               => 'bc',
-		'display_title'                  => 'ti',
-		'hide_border'                    => 'hb',
-		'dismiss_text'                   => 'dt',
-		'dismiss_text_alignment'         => 'da',
-		'frequency'                      => 'fr',
-		'overlay_color'                  => 'oc',
-		'overlay_opacity'                => 'oo',
-		'overlay_size'                   => 'os',
-		'placement'                      => 'pl',
-		'trigger_type'                   => 'tt',
-		'trigger_delay'                  => 'td',
-		'trigger_scroll_progress'        => 'ts',
-		'trigger_blocks_count'           => 'tb',
-		'archive_insertion_posts_count'  => 'ac',
-		'archive_insertion_is_repeating' => 'ar',
-		'utm_suppression'                => 'ut',
+		'background_color'               => 'n_bc',
+		'display_title'                  => 'n_ti',
+		'hide_border'                    => 'n_hb',
+		'frequency'                      => 'n_fr',
+		'frequency_max'                  => 'n_fm',
+		'frequency_start'                => 'n_fs',
+		'frequency_between'              => 'n_fb',
+		'frequency_reset'                => 'n_ft',
+		'overlay_color'                  => 'n_oc',
+		'overlay_opacity'                => 'n_oo',
+		'overlay_size'                   => 'n_os',
+		'no_overlay_background'          => 'n_bg',
+		'placement'                      => 'n_pl',
+		'trigger_type'                   => 'n_tt',
+		'trigger_delay'                  => 'n_td',
+		'trigger_scroll_progress'        => 'n_ts',
+		'trigger_blocks_count'           => 'n_tb',
+		'archive_insertion_posts_count'  => 'n_ac',
+		'archive_insertion_is_repeating' => 'n_ar',
+		'utm_suppression'                => 'n_ut',
 	];
 
 	/**
@@ -72,6 +75,7 @@ final class Newspack_Popups {
 			add_action( 'init', [ __CLASS__, 'register_cpt' ] );
 			add_action( 'init', [ __CLASS__, 'register_meta' ] );
 			add_action( 'init', [ __CLASS__, 'register_taxonomy' ] );
+			add_action( 'init', [ __CLASS__, 'disable_prompts_for_protected_pages' ] );
 			add_action( 'enqueue_block_editor_assets', [ __CLASS__, 'enqueue_block_editor_assets' ] );
 			add_action( 'customize_controls_enqueue_scripts', [ __CLASS__, 'enqueue_customizer_assets' ] );
 			add_filter( 'display_post_states', [ __CLASS__, 'display_post_states' ], 10, 2 );
@@ -87,6 +91,7 @@ final class Newspack_Popups {
 			include_once dirname( __FILE__ ) . '/class-newspack-popups-segmentation.php';
 			include_once dirname( __FILE__ ) . '/class-newspack-popups-custom-placements.php';
 			include_once dirname( __FILE__ ) . '/class-newspack-popups-parse-logs.php';
+			include_once dirname( __FILE__ ) . '/class-newspack-popups-newsletters.php';
 			include_once dirname( __FILE__ ) . '/class-newspack-popups-donations.php';
 			include_once dirname( __FILE__ ) . '/class-newspack-popups-view-as.php';
 		}
@@ -118,7 +123,7 @@ final class Newspack_Popups {
 			'public'       => false,
 			'show_ui'      => true,
 			'show_in_rest' => true,
-			'supports'     => [ 'editor', 'title', 'custom-fields' ],
+			'supports'     => [ 'editor', 'title', 'custom-fields', 'thumbnail' ],
 			'taxonomies'   => [ 'category', 'post_tag' ],
 			'menu_icon'    => 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDI0IDI0IiByb2xlPSJpbWciIGFyaWEtaGlkZGVuPSJ0cnVlIiBmb2N1c2FibGU9ImZhbHNlIj48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik02Ljg2MyAxMy42NDRMNSAxMy4yNWgtLjVhLjUuNSAwIDAxLS41LS41di0zYS41LjUgMCAwMS41LS41SDVMMTggNi41aDJWMTZoLTJsLTMuODU0LS44MTUuMDI2LjAwOGEzLjc1IDMuNzUgMCAwMS03LjMxLTEuNTQ5em0xLjQ3Ny4zMTNhMi4yNTEgMi4yNTEgMCAwMDQuMzU2LjkyMWwtNC4zNTYtLjkyMXptLTIuODQtMy4yOEwxOC4xNTcgOGguMzQzdjYuNWgtLjM0M0w1LjUgMTEuODIzdi0xLjE0NnoiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZmlsbD0id2hpdGUiPjwvcGF0aD48L3N2Zz4K',
 		];
@@ -216,6 +221,58 @@ final class Newspack_Popups {
 
 		\register_meta(
 			'post',
+			'frequency_max',
+			[
+				'object_subtype' => self::NEWSPACK_POPUPS_CPT,
+				'show_in_rest'   => true,
+				'type'           => 'integer',
+				'default'        => 0,
+				'single'         => true,
+				'auth_callback'  => '__return_true',
+			]
+		);
+
+		\register_meta(
+			'post',
+			'frequency_start',
+			[
+				'object_subtype' => self::NEWSPACK_POPUPS_CPT,
+				'show_in_rest'   => true,
+				'type'           => 'integer',
+				'default'        => 0,
+				'single'         => true,
+				'auth_callback'  => '__return_true',
+			]
+		);
+
+		\register_meta(
+			'post',
+			'frequency_between',
+			[
+				'object_subtype' => self::NEWSPACK_POPUPS_CPT,
+				'show_in_rest'   => true,
+				'type'           => 'integer',
+				'default'        => 0,
+				'single'         => true,
+				'auth_callback'  => '__return_true',
+			]
+		);
+
+		\register_meta(
+			'post',
+			'frequency_reset',
+			[
+				'object_subtype' => self::NEWSPACK_POPUPS_CPT,
+				'show_in_rest'   => true,
+				'type'           => 'string',
+				'default'        => 'month',
+				'single'         => true,
+				'auth_callback'  => '__return_true',
+			]
+		);
+
+		\register_meta(
+			'post',
 			'placement',
 			[
 				'object_subtype' => self::NEWSPACK_POPUPS_CPT,
@@ -284,6 +341,7 @@ final class Newspack_Popups {
 				'object_subtype' => self::NEWSPACK_POPUPS_CPT,
 				'show_in_rest'   => true,
 				'type'           => 'string',
+				'default'        => 'medium',
 				'single'         => true,
 				'auth_callback'  => '__return_true',
 			]
@@ -291,23 +349,12 @@ final class Newspack_Popups {
 
 		\register_meta(
 			'post',
-			'dismiss_text',
+			'no_overlay_background',
 			[
 				'object_subtype' => self::NEWSPACK_POPUPS_CPT,
 				'show_in_rest'   => true,
-				'type'           => 'string',
-				'single'         => true,
-				'auth_callback'  => '__return_true',
-			]
-		);
-
-		\register_meta(
-			'post',
-			'dismiss_text_alignment',
-			[
-				'object_subtype' => self::NEWSPACK_POPUPS_CPT,
-				'show_in_rest'   => true,
-				'type'           => 'string',
+				'type'           => 'boolean',
+				'default'        => false,
 				'single'         => true,
 				'auth_callback'  => '__return_true',
 			]
@@ -557,8 +604,10 @@ final class Newspack_Popups {
 
 		if ( self::NEWSPACK_POPUPS_CPT !== $screen->post_type ) {
 			// It's not a popup CPT.
-			if ( 'page' === $screen->post_type || 'post' === $screen->post_type ) {
-				// But it's a page or post.
+
+			$supported_post_types = Newspack_Popups_Model::get_default_popup_post_types();
+			if ( in_array( $screen->post_type, $supported_post_types, true ) ) {
+				// But it's a supported post type.
 				\wp_enqueue_script(
 					'newspack-popups',
 					plugins_url( '../dist/documentSettings.js', __FILE__ ),
@@ -604,6 +653,7 @@ final class Newspack_Popups {
 					)
 				),
 				'preview_query_keys'           => self::PREVIEW_QUERY_KEYS,
+				'experimental'                 => class_exists( '\Newspack\Reader_Activation' ) ? \Newspack\Reader_Activation::is_enabled() : false,
 			]
 		);
 		\wp_enqueue_style(
@@ -677,7 +727,7 @@ final class Newspack_Popups {
 		$is_customizer_preview = is_customize_preview();
 		// Used by the Newspack Plugin's Campaigns Wizard.
 		$is_view_as_preview = false != Newspack_Popups_View_As::viewing_as_spec();
-		return self::previewed_popup_id() || $is_view_as_preview || $is_customizer_preview;
+		return ! empty( self::previewed_popup_id() ) || $is_view_as_preview || $is_customizer_preview;
 	}
 
 	/**
@@ -691,13 +741,6 @@ final class Newspack_Popups {
 			return sanitize_text_field( $_GET[ self::NEWSPACK_POPUP_PREVIEW_QUERY_PARAM ] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
 		return null;
-	}
-
-	/**
-	 * Get the default dismiss text.
-	 */
-	public static function get_default_dismiss_text() {
-		return __( "I'm not interested", 'newspack' );
 	}
 
 	/**
@@ -756,13 +799,11 @@ final class Newspack_Popups {
 			case 'overlay-center':
 			case 'overlay-top':
 			case 'overlay-bottom':
-				$dismiss_text = self::get_default_dismiss_text();
 				$trigger_type = 'time';
 				break;
 			case 'above-header':
 			case 'custom':
 			default:
-				$dismiss_text = null;
 				$trigger_type = 'scroll';
 				break;
 		}
@@ -770,11 +811,11 @@ final class Newspack_Popups {
 		update_post_meta( $post_id, 'background_color', '#FFFFFF' );
 		update_post_meta( $post_id, 'display_title', false );
 		update_post_meta( $post_id, 'hide_border', false );
-		update_post_meta( $post_id, 'dismiss_text', $dismiss_text );
 		update_post_meta( $post_id, 'frequency', $frequency );
 		update_post_meta( $post_id, 'overlay_color', '#000000' );
 		update_post_meta( $post_id, 'overlay_opacity', 30 );
 		update_post_meta( $post_id, 'overlay_size', $overlay_size );
+		update_post_meta( $post_id, 'no_overlay_background', false );
 		update_post_meta( $post_id, 'placement', $placement );
 		update_post_meta( $post_id, 'trigger_type', $trigger_type );
 		update_post_meta( $post_id, 'trigger_delay', 3 );
@@ -844,10 +885,20 @@ final class Newspack_Popups {
 	}
 
 	/**
-	 * Is the user an admin user?
+	 * Is the user an admin or editor user?
+	 * If so, prompts will be shown to these users while logged in, but analytics
+	 * will not be fired for them.
 	 */
 	public static function is_user_admin() {
-		return is_user_logged_in() && current_user_can( 'edit_others_pages' );
+		/**
+		 * Filter to allow other plugins to decide which capability should be checked
+		 * to determine whether a user's activity should be tracked via Google Analytics.
+		 *
+		 * @param string $capability Capability to check. Default: edit_others_pages.
+		 * @return string Filtered capability string.
+		 */
+		$capability = apply_filters( 'newspack_popups_admin_user_capability', 'edit_others_pages' );
+		return is_user_logged_in() && current_user_can( $capability );
 	}
 
 	/**
@@ -857,6 +908,17 @@ final class Newspack_Popups {
 	 */
 	public static function is_account_related_post( $post ) {
 		return has_shortcode( $post->post_content, 'woocommerce_my_account' );
+	}
+
+	/**
+	 * Should tracking code be inserted?
+	 * We shouldn't be tracking analytics in the dashboard or on the front-end by admin/editor users.
+	 */
+	public static function is_tracking() {
+		if ( is_admin() || self::is_user_admin() || Newspack_Popups_Settings::is_non_interactive() ) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -1159,6 +1221,28 @@ final class Newspack_Popups {
 		}
 
 		return $new_popup_id;
+	}
+
+	/**
+	 * Disable prompts by default if the given post ID is a protected page,
+	 * e.g. My Account, Donate, Privacy Policy, etc. other than the homepage or blog page.
+	 * Protected pages are defined in the \Newspack\Patches class.
+	 */
+	public static function disable_prompts_for_protected_pages() {
+		if ( class_exists( '\Newspack\Patches' ) ) {
+			$protected_page_ids = \Newspack\Patches::get_protected_page_ids();
+			$front_page_id      = intval( get_option( 'page_on_front', -1 ) );
+			$blog_posts_id      = intval( get_option( 'page_for_posts', -1 ) );
+			foreach ( $protected_page_ids as $page_id ) {
+				if (
+					$page_id !== $front_page_id &&
+					$page_id !== $blog_posts_id &&
+					! in_array( 'newspack_popups_has_disabled_popups', array_keys( get_post_meta( $page_id ) ), true )
+				) {
+					update_post_meta( $page_id, 'newspack_popups_has_disabled_popups', true );
+				}
+			}
+		}
 	}
 }
 Newspack_Popups::instance();
