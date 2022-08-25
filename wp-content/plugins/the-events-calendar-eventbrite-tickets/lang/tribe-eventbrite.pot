@@ -1,0 +1,1032 @@
+# Copyright (C) 2021 Modern Tribe
+# This file is distributed under the same license as the The Events Calendar: Eventbrite Tickets package.
+msgid ""
+msgstr ""
+"Project-Id-Version: The Events Calendar: Eventbrite Tickets 4.6.8\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/events-"
+"eventbrite\n"
+"POT-Creation-Date: 2021-02-24 19:03:34+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2021-02-24 19:03\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+
+#: src/Tribe/Event.php:207 src/Tribe/Event.php:243 src/Tribe/Main.php:462
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:1269
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:1305
+#: src/views/eventbrite/eventbrite-events-table.php:109
+msgid "Free"
+msgstr ""
+
+#: src/Tribe/Event.php:239 src/Tribe/Main.php:463
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:1301
+#: src/views/eventbrite/eventbrite-events-table.php:111
+msgid "Donation"
+msgstr ""
+
+#: src/Tribe/Main.php:281 src/Tribe/Notices.php:142
+msgid "Eventbrite Tickets"
+msgstr ""
+
+#: src/Tribe/Main.php:572
+msgid "Import Events"
+msgstr ""
+
+#: src/Tribe/Main.php:687
+msgid ""
+"Registering a recurring event series is not recommended with Eventbrite. "
+"Only the first event in the series will be registered. Please configure your "
+"events carefully."
+msgstr ""
+
+#: src/Tribe/Main.php:692
+msgid "Recurring Events are not supported with Eventbrite"
+msgstr ""
+
+#: src/Tribe/Main.php:783
+msgid "Eventbrite Import Settings"
+msgstr ""
+
+#: src/Tribe/Main.php:791
+msgid "Default status to use for imported events"
+msgstr ""
+
+#: src/Tribe/Main.php:867 src/Tribe/Main.php:1633 src/Tribe/Main.php:1654
+msgid "Eventbrite"
+msgstr ""
+
+#: src/Tribe/Main.php:980
+msgid "You don't have permission to do that."
+msgstr ""
+
+#: src/Tribe/Main.php:1022
+msgid "Unable to get authorization from the Eventbrite API: %s"
+msgstr ""
+
+#: src/Tribe/Main.php:1080 src/Tribe/Sync/Event.php:30
+#: src/Tribe/Sync/Main.php:80
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:774
+msgid "This Event is a revision and cannot sync to Eventbrite."
+msgstr ""
+
+#: src/Tribe/Main.php:1086 src/Tribe/Sync/Event.php:268
+msgid "An Event Title is required"
+msgstr ""
+
+#: src/Tribe/Main.php:1095 src/Tribe/Sync/Event.php:290
+msgid "The venue is missing"
+msgstr ""
+
+#: src/Tribe/Main.php:1100 src/Tribe/Sync/Event.php:298
+msgid "The Venue is missing the Title"
+msgstr ""
+
+#: src/Tribe/Main.php:1104 src/Tribe/Sync/Event.php:302
+msgid "No Address for this Venue"
+msgstr ""
+
+#: src/Tribe/Main.php:1108 src/Tribe/Sync/Event.php:306
+msgid "This Venue is missing the City"
+msgstr ""
+
+#: src/Tribe/Main.php:1133 src/Tribe/Sync/Event.php:346
+msgid "An organizer is required"
+msgstr ""
+
+#: src/Tribe/Main.php:1138 src/Tribe/Sync/Event.php:353
+msgid "Ticket Name"
+msgstr ""
+
+#: src/Tribe/Main.php:1139 src/Tribe/Sync/Event.php:354
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:326
+msgid "Date to Start Ticket Sales"
+msgstr ""
+
+#: src/Tribe/Main.php:1140 src/Tribe/Sync/Event.php:355
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:347
+msgid "Date to End Ticket Sales"
+msgstr ""
+
+#: src/Tribe/Main.php:1141 src/Tribe/Sync/Event.php:356
+msgid "Ticket Type"
+msgstr ""
+
+#: src/Tribe/Main.php:1142 src/Tribe/Sync/Event.php:357
+msgid "Ticket Cost"
+msgstr ""
+
+#: src/Tribe/Main.php:1143 src/Tribe/Sync/Event.php:358
+msgid "Ticket Quantity"
+msgstr ""
+
+#: src/Tribe/Main.php:1144 src/Tribe/Sync/Event.php:359
+msgid "Ticket - Include Fee in Price"
+msgstr ""
+
+#: src/Tribe/Main.php:1165 src/Tribe/Sync/Event.php:378
+msgid "Ticket Cost (must be numeric)"
+msgstr ""
+
+#: src/Tribe/Main.php:1181 src/Tribe/Sync/Event.php:394
+msgid "Missing Fields: %s"
+msgstr ""
+
+#: src/Tribe/Main.php:1234 src/Tribe/Sync/Event.php:457
+msgid "Ticket sales end date cannot be after the event ends"
+msgstr ""
+
+#: src/Tribe/Main.php:1238 src/Tribe/Sync/Event.php:461
+msgid "Ticket sales start date cannot be after ticket sales end date"
+msgstr ""
+
+#: src/Tribe/Main.php:1242 src/Tribe/Sync/Event.php:465
+msgid "Ticket sales start and end datetime must not be the same"
+msgstr ""
+
+#: src/Tribe/Main.php:1251 src/Tribe/Sync/Event.php:474
+msgid "The dates you have chosen for your ticket sales are inconsistent: %s"
+msgstr ""
+
+#: src/Tribe/Main.php:1322 src/Tribe/Main.php:1345 src/Tribe/Main.php:1351
+msgid ""
+"We were unable to import your Eventbrite event. Please verify the event id "
+"and try again."
+msgstr ""
+
+#: src/Tribe/Main.php:1331
+msgid "Invalid URL for the event"
+msgstr ""
+
+#: src/Tribe/Main.php:1355
+msgid "Event already imported."
+msgstr ""
+
+#: src/Tribe/Main.php:1452
+msgid "We were unable to import your Eventbrite event. Please try again."
+msgstr ""
+
+#: src/Tribe/Main.php:1578
+msgid "Import: Eventbrite "
+msgstr ""
+
+#: src/Tribe/Main.php:1579
+msgid "Import: Eventbrite"
+msgstr ""
+
+#: src/Tribe/Main.php:1618
+msgid "Import"
+msgstr ""
+
+#: src/Tribe/Main.php:1659
+msgid ""
+"Eventbrite Tickets needs to be connected to your Eventbrite account via an "
+"App Key/Client Secret. If you haven't yet configured one, do so at %1$s. "
+"When configuring your application, make sure to set the OAuth Redirect URI "
+"set to %2$s. Once your App Key and Client Secret are configured plug them in "
+"below, \"Save\" the page, and hit the \"Get Authorization\" button that "
+"appears once the Key + Secret have saved. After you've been authorized "
+"you'll be ready to start syncing Events!"
+msgstr ""
+
+#: src/Tribe/Main.php:1659
+msgid "http://m.tri.be/vp"
+msgstr ""
+
+#: src/Tribe/Main.php:1670
+msgid "Auth URL"
+msgstr ""
+
+#: src/Tribe/Main.php:1671
+msgid ""
+"When configuring your application, make sure to set the <strong>OAuth "
+"Redirect URI</strong> on Eventbrite to the value above. <strong>We recommend "
+"you copy and paste this as it must be identical to what you see above.</"
+"strong>"
+msgstr ""
+
+#: src/Tribe/Main.php:1678
+msgid "Application Key"
+msgstr ""
+
+#: src/Tribe/Main.php:1683
+msgid "Client Secret"
+msgstr ""
+
+#: src/Tribe/Main.php:1704
+msgid "Get Authorization"
+msgstr ""
+
+#: src/Tribe/Main.php:1711
+msgid "Remove Authorization"
+msgstr ""
+
+#: src/Tribe/Main.php:1718
+msgid "See our %s."
+msgstr ""
+
+#: src/Tribe/Main.php:1718
+msgid "detailed walkthrough"
+msgstr ""
+
+#: src/Tribe/Main.php:1735
+msgid "The request was sent insecurely."
+msgstr ""
+
+#: src/Tribe/Main.php:1741
+msgid "The request wasn't sent from this tab."
+msgstr ""
+
+#: src/Tribe/Migrate.php:80
+msgid ""
+"Currently migrating Eventbrite events to ensure proper data is displayed "
+"when editing."
+msgstr ""
+
+#: src/Tribe/Migrate.php:96
+msgid ""
+"To ensure all Eventbrite Imports work properly you will need to trigger the "
+"Events Migration."
+msgstr ""
+
+#: src/Tribe/Migrate.php:97
+msgid "Migrate Events"
+msgstr ""
+
+#: src/Tribe/Notices.php:29
+msgid ""
+"Eventbrite status is set to DRAFT. You can update this in the 'Eventbrite "
+"Information' section further down this page."
+msgstr ""
+
+#: src/Tribe/Notices.php:44
+msgid ""
+"You did not create any tickets for your event.  You will not be able to "
+"publish this event on Eventbrite unless you first add a ticket at Eventbrite."
+"com."
+msgstr ""
+
+#. #-#-#-#-#  tribe-eventbrite.pot (The Events Calendar: Eventbrite Tickets 4.6.8)  #-#-#-#-#
+#. Author of the plugin/theme
+#: src/Tribe/Notices.php:117 tribe-eventbrite.php:187 tribe-eventbrite.php:188
+msgid "The Events Calendar"
+msgstr ""
+
+#: src/Tribe/Notices.php:118
+msgid ""
+"To begin using The Events Calendar: Eventbrite Tickets, please install the "
+"latest version of <a href=\"%s\" class=\"thickbox\" title=\"%s\">The Events "
+"Calendar</a>."
+msgstr ""
+
+#: src/Tribe/Notices.php:123 src/Tribe/Notices.php:190
+msgid "Success! You have authorized your Eventbrite Application Key."
+msgstr ""
+
+#: src/Tribe/Notices.php:135
+msgid ""
+"Thank you for installing Eventbrite Tickets! Be sure to <a href=\"%s\" title="
+"\"%s\">connect your Eventbrite account</a> so that you can start creating "
+"and importing events."
+msgstr ""
+
+#: src/Tribe/Notices.php:138
+msgid ""
+"Thank you for updating Eventbrite Tickets! Be sure to <a href=\"%s\" title="
+"\"%s\">connect your Eventbrite account</a> so that your events stay linked "
+"to their Eventbrite.com listings."
+msgstr ""
+
+#: src/Tribe/Notices.php:210
+msgid "Success! You have deauthorized your Eventbrite Application Key."
+msgstr ""
+
+#: src/Tribe/Notices.php:227
+msgid ""
+"Your Eventbrite token is not valid, check %s page to see how to create a new "
+"one."
+msgstr ""
+
+#: src/Tribe/Notices.php:228
+msgid "Add-ons API"
+msgstr ""
+
+#: src/Tribe/Sync/Event.php:210
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:937
+msgid "This Event requires a Title to sync to Eventbrite."
+msgstr ""
+
+#: src/Tribe/Sync/Event.php:232
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:947
+msgid "Eventbrite requires a Venue and it must have a valid Address."
+msgstr ""
+
+#: src/Tribe/Sync/Event.php:242
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:959
+msgid "This Event Requires a Organizer to sync to Eventbrite"
+msgstr ""
+
+#: src/Tribe/Sync/Event.php:449
+msgid "Ticket sales start date cannot be before today"
+msgstr ""
+
+#: src/Tribe/Sync/Event.php:453
+msgid "Ticket sales end date cannot be before today"
+msgstr ""
+
+#: src/Tribe/Sync/Main.php:136
+msgid ""
+"An Unknown Error Occurred and the event may not have synced to Eventbrite."
+msgstr ""
+
+#: src/Tribe/Sync/Main.php:143
+msgid "Eventbrite Event Not Owned."
+msgstr ""
+
+#: src/Tribe/Sync/Main.php:215
+msgid "An Unknown Error Occurred and syncing from Eventbrite is not enabled."
+msgstr ""
+
+#: src/Tribe/Sync/Organizer.php:74
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:318
+msgid "Unnamed Organizer"
+msgstr ""
+
+#: src/Tribe/Sync/Organizer.php:88
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:344
+msgid "Email:"
+msgstr ""
+
+#: src/Tribe/Sync/Organizer.php:92
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:348
+msgid "Website:"
+msgstr ""
+
+#: src/Tribe/Sync/Organizer.php:96
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:352
+msgid "Phone:"
+msgstr ""
+
+#: src/Tribe/Sync/Utilities.php:61
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:1566
+msgctxt "opening curly double quote"
+msgid "&#8220;"
+msgstr ""
+
+#: src/Tribe/Sync/Utilities.php:62
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:1567
+msgctxt "closing curly double quote"
+msgid "&#8221;"
+msgstr ""
+
+#: src/Tribe/Sync/Utilities.php:63
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:1568
+msgctxt "apostrophe"
+msgid "&#8217;"
+msgstr ""
+
+#: src/Tribe/Sync/Utilities.php:64
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:1569
+msgctxt "prime"
+msgid "&#8242;"
+msgstr ""
+
+#: src/Tribe/Sync/Utilities.php:65
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:1570
+msgctxt "double prime"
+msgid "&#8243;"
+msgstr ""
+
+#: src/Tribe/Sync/Utilities.php:66
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:1571
+msgctxt "opening curly single quote"
+msgid "&#8216;"
+msgstr ""
+
+#: src/Tribe/Sync/Utilities.php:67
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:1572
+msgctxt "closing curly single quote"
+msgid "&#8217;"
+msgstr ""
+
+#: src/Tribe/Sync/Utilities.php:68
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:1573
+msgctxt "en dash"
+msgid "&#8211;"
+msgstr ""
+
+#: src/Tribe/Sync/Utilities.php:69
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:1574
+msgctxt "em dash"
+msgid "&#8212;"
+msgstr ""
+
+#: src/Tribe/Sync/Venue.php:75
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:439
+msgid "Unnamed Venue"
+msgstr ""
+
+#: src/Tribe/Sync/Venue.php:118
+msgid ""
+"There was a problem determining the coordinates for your event, try using a "
+"different venue address."
+msgstr ""
+
+#: src/admin-views/aggregator/origins/eventbrite.php:6
+msgid "Import Type:"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/eventbrite.php:7
+msgid "Select Import Type"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/eventbrite.php:8
+msgid ""
+"One-time imports include all currently listed events, while scheduled "
+"imports automatically grab new events and updates from Eventbrite on a set "
+"schedule. Single events can be added via a one-time import."
+msgstr ""
+
+#: src/admin-views/aggregator/origins/eventbrite.php:13
+msgid "Import from Eventbrite"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/eventbrite.php:16
+#: src/admin-views/aggregator/origins/eventbrite.php:139
+msgid "Import from your Eventbrite account"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/eventbrite.php:18
+msgid "Select how often you would like events to be automatically imported."
+msgstr ""
+
+#: src/admin-views/aggregator/origins/eventbrite.php:40
+msgid "Please log in to enable event imports from Eventbrite."
+msgstr ""
+
+#: src/admin-views/aggregator/origins/eventbrite.php:47
+msgid "Log into Eventbrite"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/eventbrite.php:63
+#: src/admin-views/aggregator/origins/eventbrite.php:74
+msgid "Scheduled Import"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/eventbrite.php:73
+msgid "One-Time Import"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/eventbrite.php:130
+msgid "Import Source"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/eventbrite.php:131
+msgid "Select Source"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/eventbrite.php:133
+msgid ""
+"Import events directly from your connected Eventbrite.com account or from a "
+"public Eventbrite.com URL."
+msgstr ""
+
+#: src/admin-views/aggregator/origins/eventbrite.php:146
+msgid "Import from Eventbrite URL"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/eventbrite.php:181
+msgid "URL:"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/eventbrite.php:182
+msgid "eventbrite.com/e/example-12345"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/eventbrite.php:183
+msgid ""
+"Enter an Eventbrite event URL, e.g. https://www.eventbrite.com/e/"
+"example-12345"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/eventbrite.php:212
+msgid "Invalid Eventbrite URL"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/eventbrite.php:222
+msgid "Preview"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/refine.php:3
+msgid "Keyword(s)"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/refine.php:5
+msgid "Location"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/refine.php:7
+msgid "Date"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/refine.php:9
+msgctxt "Radius with abbreviation"
+msgid "Radius (%s)"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/refine.php:27
+msgid ""
+"Use the filters to narrow down which events are fetched from Eventbrite."
+msgstr ""
+
+#: src/admin-views/aggregator/origins/refine.php:57
+msgid "Refine:"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/refine.php:94
+msgid "Start date for Eventbrite Tickets is Required"
+msgstr ""
+
+#: src/admin-views/aggregator/origins/refine.php:102
+msgid "Events on or after"
+msgstr ""
+
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:210
+msgid "Unable to authorize."
+msgstr ""
+
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:469
+msgid ""
+"There was a problem determining the coordinates for your event, try using a "
+"diferent venue address."
+msgstr ""
+
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:617
+msgid ""
+"When absorbing fees, the price must be greater than the fee, status of the "
+"Event is \"Draft\""
+msgstr ""
+
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:622
+msgid ""
+"You will need to edit your account settings at %1$s and update your package "
+"settings to complete this operation."
+msgstr ""
+
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:628
+msgid ""
+"There was an error when syncing to EventBrite, %1$s and provide the "
+"following information on the Thread: %2$s"
+msgstr ""
+
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:628
+msgid "contact our Support"
+msgstr ""
+
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:988
+msgid ""
+"Before you can create an event you will need to edit your account settings "
+"at %1$s and choose a package."
+msgstr ""
+
+#: src/deprecated/Tribe__Events__Tickets__Eventbrite__API.php:1047
+msgid ""
+"<strong>Event published successfully.</strong> To make the event "
+"<strong>Live</strong>, payment information is <em>required</em>.<br /><a "
+"href=\"%s\" target=\"_blank\">Learn how to do this</a> or <a href=\"%s\" "
+"target=\"_blank\">go to Eventbrite right now and update the event</a>."
+msgstr ""
+
+#: src/functions/php-min-version.php:51
+msgctxt "Plugin A \"and\" Plugin B"
+msgid " and "
+msgstr ""
+
+#: src/functions/php-min-version.php:52
+msgctxt "Plugin A\",\" Plugin B"
+msgid ", "
+msgstr ""
+
+#: src/functions/php-min-version.php:64
+msgid "<b>%1$s</b> requires <b>PHP %2$s</b> or higher."
+msgid_plural "<b>%1$s</b> require <b>PHP %2$s</b> or higher."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/functions/php-min-version.php:74
+msgid ""
+"To allow better control over dates, advanced security improvements and "
+"performance gain."
+msgstr ""
+
+#: src/functions/php-min-version.php:76
+msgid ""
+"Contact your Host or your system administrator and ask to upgrade to the "
+"latest version of PHP."
+msgstr ""
+
+#: src/views/eventbrite/add-existing-event.php:46
+msgid ""
+"The content field must be empty in order to import the event description."
+msgstr ""
+
+#: src/views/eventbrite/add-existing-event.php:118
+msgid "Import Event from Eventbrite"
+msgstr ""
+
+#: src/views/eventbrite/add-existing-event.php:123
+msgid "Import an existing Eventbrite event?"
+msgstr ""
+
+#: src/views/eventbrite/add-existing-event.php:132
+msgid "Enter your Eventbrite Event ID here:"
+msgstr ""
+
+#: src/views/eventbrite/eb-featured-image-control.php:22
+msgid "Use image on Eventbrite.com"
+msgstr ""
+
+#: src/views/eventbrite/eb-featured-image-control.php:24
+msgid ""
+"If your Update Authority settings allow, then when this event is updated on "
+"WordPress, the Featured Image will be sent to Eventbrite.com and saved as "
+"the Event Image."
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:19
+msgid "Eventbrite Information"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:24
+msgid "Eventbrite Event ID:"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:32
+msgid "Eventbrite Event Status:"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:41
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:417
+msgctxt "Eventbrite status"
+msgid "Draft"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:42
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:418
+msgctxt "Eventbrite status"
+msgid "Live"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:43
+msgctxt "Eventbrite status"
+msgid "Canceled"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:47
+msgid ""
+"At this time, the event can only be made live again through the Quick Links "
+"in the My Events tab of your account dashboard."
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:47
+#: src/views/eventbrite/eventbrite-events-table.php:50
+msgid "Manage Event"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:50
+msgid ""
+"This event was created without a ticket. You need to create a ticket before "
+"you can change this event's status."
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:55
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:424
+msgid "Eventbrite Event Privacy"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:69
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:438
+msgctxt "Eventbrite event privacy"
+msgid "Public"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:70
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:439
+msgctxt "Eventbrite event privacy"
+msgid "Private"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:73
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:443
+msgid ""
+"Public events are listed publicly on Eventbrite and search engines. Private "
+"events are not."
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:84
+msgid "Associated Tickets:"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:85
+msgid "The following Eventbrite tickets are associated to this event"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:92
+msgid "Ticket"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:93
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:380
+msgid "Cost"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:94
+msgid "Sold"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:95
+msgid "Available"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:96
+msgid "End Sales"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:124
+msgid "Edit existing tickets"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:125
+msgid "Create a new ticket"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:134
+msgid "There are no tickets associated with this event!"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:135
+msgid ""
+"You cannot publish this event in Eventbrite unless you first add a ticket on "
+"Eventbrite.com."
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:141
+msgid "Eventbrite Shortcuts:"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:147
+msgid "Manage my Event"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:148
+msgid "Manage Discounts"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:149
+msgid "Manage Attendees"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:150
+msgid "Email Attendees"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:151
+msgid "Print Badges"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-events-table.php:152
+msgid "Print Check-In List"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:27
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:207
+msgid "Tickets"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:133
+msgid "Eventbrite only allows events to be saved that start in the future."
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:148
+msgid "Please provide a ticket name for the Eventbrite ticket."
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:153
+msgid "You must set a price for the ticket"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:158
+msgid "Ticket quantity is not a number"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:165
+msgid "A Paypal email address must be provided."
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:213
+msgid ""
+"This event has been deleted from Eventbrite. It is now unregistered from "
+"Eventbrite."
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:224
+msgid "This event was imported from Eventbrite."
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:226
+msgid "View Event"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:235
+msgid "You are not the owner of this event listing on Eventbrite.com."
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:236
+msgid ""
+"Content changes made to the event here will not impact the listing on "
+"Eventbrite.com."
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:241
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:267
+msgid "Display tickets on event page?"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:243
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:261
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:269
+msgid "Yes"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:244
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:262
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:270
+msgid "No"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:255
+msgid "Register this event with eventbrite.com?"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:257
+msgid "Sync this event to eventbrite.com when updating?"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:276
+msgid ""
+"Note: The Eventbrite API does not yet support recurring events, so all "
+"instances of recurring events will be associated with a single Eventbrite "
+"event."
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:279
+msgid ""
+"Note: Eventbrite requires you enter an organizer. If you neglect to enter an "
+"organizer, your display name will be passed as the organizer name to "
+"Eventbrite."
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:282
+msgid ""
+"Note: in order for your events to appear in Eventbrite's search by location, "
+"the venue of your events must have a latitude and a longitude defined "
+"(requires the Events Calendar Pro and a valid custom Google Maps API key) "
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:288
+msgid "Set up your first ticket"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:290
+msgid ""
+"To create multiple tickets per event, submit this form, then follow the link "
+"to Eventbrite."
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:300
+msgid "Name"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:314
+msgid "Examples: Member, Non-member, Student, Early Bird"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:318
+msgid "Description"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:369
+msgid "Type"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:372
+msgid " Set Price"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:374
+msgid " Donation Based"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:376
+msgid " Free"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:385
+msgid "Quantity"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:392
+msgid "Fee"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:395
+msgid "Add Service Fee on top of price"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:397
+msgid " Include Service fee in price"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:402
+msgid "Publish this post to create the Event with Eventbrite.com"
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:403
+msgid ""
+"When you <strong>publish</strong> this post, an event will be created for "
+"you at Eventbrite. Before you publish, you can choose whether this event "
+"will save as a draft or live event using the Eventbrite status below."
+msgstr ""
+
+#: src/views/eventbrite/eventbrite-meta-box-extension.php:409
+msgid "Eventbrite Event Status"
+msgstr ""
+
+#: src/views/eventbrite/import-eventbrite-events.php:24
+msgid "Import Eventbrite Events"
+msgstr ""
+
+#: src/views/eventbrite/import-eventbrite-events.php:26
+msgid "Import the event details from any public Eventbrite event."
+msgstr ""
+
+#: src/views/eventbrite/import-eventbrite-events.php:27
+msgid ""
+"Your Eventbrite event id can be found by going to your event page at "
+"Eventbrite.com.  Once there, examine your browser's address bar to see "
+"something like this - https://www.eventbrite.com/event/212356789.  The "
+"number after '/event/' is your event id."
+msgstr ""
+
+#: src/views/eventbrite/import-eventbrite-events.php:35
+msgid "Select an Existing Event"
+msgstr ""
+
+#: src/views/eventbrite/import-eventbrite-events.php:37
+msgid "Select from your existing Eventbrite events"
+msgstr ""
+
+#: src/views/eventbrite/import-eventbrite-events.php:43
+msgid "Eventbrite Event ID"
+msgstr ""
+
+#: src/views/eventbrite/import-eventbrite-events.php:46
+msgid "This field will be used instead of the selected event above."
+msgstr ""
+
+#: src/views/eventbrite/import-eventbrite-events.php:51
+msgid "How are timezones handled?"
+msgstr ""
+
+#: src/views/eventbrite/import-eventbrite-events.php:67
+msgid ""
+"The event will be imported complete with the same timezone as defined on "
+"eventbrite.com. You can make use of The Events Calendar&#146;s %1$s%2$s%3$s "
+"to change how the actual time is displayed."
+msgstr ""
+
+#: tribe-eventbrite.php:55
+msgid "Events Eventbrite Tickets"
+msgstr ""
+
+#: tribe-eventbrite.php:185
+msgid ""
+"To begin using The Events Calendar: Eventbrite Tickets, please install the "
+"latest version of"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "The Events Calendar: Eventbrite Tickets"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Eventbrite Tickets connects the power of The Events Calendar to your account "
+"on Eventbrite.com. Send WordPress events to Eventbrite, import existing "
+"Eventbrite events, display tickets, and more."
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://m.tri.be/27"
+msgstr ""
