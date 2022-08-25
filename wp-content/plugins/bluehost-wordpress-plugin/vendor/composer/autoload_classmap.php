@@ -131,6 +131,7 @@ return array(
     'NewfoldLabs\\WP\\Module\\Data\\Helpers\\Transient' => $vendorDir . '/newfold-labs/wp-module-data/src/Helpers/Transient.php',
     'NewfoldLabs\\WP\\Module\\Data\\HiiveConnection' => $vendorDir . '/newfold-labs/wp-module-data/src/HiiveConnection.php',
     'NewfoldLabs\\WP\\Module\\Data\\Listeners\\Admin' => $vendorDir . '/newfold-labs/wp-module-data/src/Listeners/Admin.php',
+    'NewfoldLabs\\WP\\Module\\Data\\Listeners\\BluehostPlugin' => $vendorDir . '/newfold-labs/wp-module-data/src/Listeners/BluehostPlugin.php',
     'NewfoldLabs\\WP\\Module\\Data\\Listeners\\Content' => $vendorDir . '/newfold-labs/wp-module-data/src/Listeners/Content.php',
     'NewfoldLabs\\WP\\Module\\Data\\Listeners\\Cron' => $vendorDir . '/newfold-labs/wp-module-data/src/Listeners/Cron.php',
     'NewfoldLabs\\WP\\Module\\Data\\Listeners\\Jetpack' => $vendorDir . '/newfold-labs/wp-module-data/src/Listeners/Jetpack.php',

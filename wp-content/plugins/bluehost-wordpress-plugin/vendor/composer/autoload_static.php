@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit34d343c9132c7bd862963b3f9935d33f
+class ComposerStaticInitc516f2b3a8883c3c448b19bddc66acab
 {
     public static $files = array (
         '305f44d06b4b9b934b549f0b525c4bea' => __DIR__ . '/..' . '/newfold-labs/wp-module-data/bootstrap.php',
@@ -265,6 +265,7 @@ class ComposerStaticInit34d343c9132c7bd862963b3f9935d33f
         'NewfoldLabs\\WP\\Module\\Data\\Helpers\\Transient' => __DIR__ . '/..' . '/newfold-labs/wp-module-data/src/Helpers/Transient.php',
         'NewfoldLabs\\WP\\Module\\Data\\HiiveConnection' => __DIR__ . '/..' . '/newfold-labs/wp-module-data/src/HiiveConnection.php',
         'NewfoldLabs\\WP\\Module\\Data\\Listeners\\Admin' => __DIR__ . '/..' . '/newfold-labs/wp-module-data/src/Listeners/Admin.php',
+        'NewfoldLabs\\WP\\Module\\Data\\Listeners\\BluehostPlugin' => __DIR__ . '/..' . '/newfold-labs/wp-module-data/src/Listeners/BluehostPlugin.php',
         'NewfoldLabs\\WP\\Module\\Data\\Listeners\\Content' => __DIR__ . '/..' . '/newfold-labs/wp-module-data/src/Listeners/Content.php',
         'NewfoldLabs\\WP\\Module\\Data\\Listeners\\Cron' => __DIR__ . '/..' . '/newfold-labs/wp-module-data/src/Listeners/Cron.php',
         'NewfoldLabs\\WP\\Module\\Data\\Listeners\\Jetpack' => __DIR__ . '/..' . '/newfold-labs/wp-module-data/src/Listeners/Jetpack.php',
@@ -343,10 +344,10 @@ class ComposerStaticInit34d343c9132c7bd862963b3f9935d33f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit34d343c9132c7bd862963b3f9935d33f::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit34d343c9132c7bd862963b3f9935d33f::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit34d343c9132c7bd862963b3f9935d33f::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit34d343c9132c7bd862963b3f9935d33f::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitc516f2b3a8883c3c448b19bddc66acab::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitc516f2b3a8883c3c448b19bddc66acab::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitc516f2b3a8883c3c448b19bddc66acab::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitc516f2b3a8883c3c448b19bddc66acab::$classMap;
 
         }, null, ClassLoader::class);
     }

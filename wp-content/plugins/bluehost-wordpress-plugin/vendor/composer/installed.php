@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'bluehost/bluehost-wordpress-plugin',
-        'pretty_version' => '2.12.3',
-        'version' => '2.12.3.0',
-        'reference' => 'a2f0678fa118c05c2d7933d14dbb5e19fbc07a6c',
+        'pretty_version' => '2.12.4',
+        'version' => '2.12.4.0',
+        'reference' => 'd98db6e5b550be335396be7fed6c5b77d77ac887',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'bluehost/bluehost-wordpress-plugin' => array(
-            'pretty_version' => '2.12.3',
-            'version' => '2.12.3.0',
-            'reference' => 'a2f0678fa118c05c2d7933d14dbb5e19fbc07a6c',
+            'pretty_version' => '2.12.4',
+            'version' => '2.12.4.0',
+            'reference' => 'd98db6e5b550be335396be7fed6c5b77d77ac887',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -65,9 +65,9 @@
             'dev_requirement' => false,
         ),
         'mustache/mustache' => array(
-            'pretty_version' => 'v2.14.1',
-            'version' => '2.14.1.0',
-            'reference' => '579ffa5c96e1d292c060b3dd62811ff01ad8c24e',
+            'pretty_version' => 'v2.14.2',
+            'version' => '2.14.2.0',
+            'reference' => 'e62b7c3849d22ec55f3ec425507bf7968193a6cb',
             'type' => 'library',
             'install_path' => __DIR__ . '/../mustache/mustache',
             'aliases' => array(),
@@ -83,9 +83,9 @@
             'dev_requirement' => false,
         ),
         'newfold-labs/wp-module-data' => array(
-            'pretty_version' => '2.2.1',
-            'version' => '2.2.1.0',
-            'reference' => 'e50ae7b2ee63a68a830b82e425856917b5815a28',
+            'pretty_version' => '2.2.2',
+            'version' => '2.2.2.0',
+            'reference' => 'f4f8bf4f1f08c664aa17bc26ba5ba34bded267b0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../newfold-labs/wp-module-data',
             'aliases' => array(),
