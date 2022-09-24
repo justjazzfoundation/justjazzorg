@@ -21,7 +21,7 @@ if ( ! class_exists( 'Tribe__Events__Tickets__Eventbrite__Main' ) ) {
 		/**
 		 * The current version of Eventbrite Tickets
 		 */
-		const VERSION = '4.6.11';
+		const VERSION = '4.6.12';
 
 		/**
 		 * Deprecated property in 4.3. Use VERSION const instead.

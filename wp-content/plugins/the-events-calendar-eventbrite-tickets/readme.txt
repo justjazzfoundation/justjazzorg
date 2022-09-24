@@ -3,10 +3,10 @@
 Contributors: theeventscalendar, bordoni, borkweb, brianjessee, geoffgraham, leahkoerper, lucatume, neillmcshea, zbtirrell
 Tags: widget, events, simple, tooltips, grid, month, list, calendar, event, venue, eventbrite, registration, tickets, ticketing, eventbright, api, dates, date, plugin, posts, sidebar, template, theme, time, google maps, google, maps, conference, workshop, concert, meeting, seminar, summit, forum, shortcode, The Events Calendar, The Events Calendar PRO
 Donate link: https://evnt.is/29
-Requires at least: 5.6
-Tested up to: 5.9.3
-Stable tag: 4.6.11
-Requires PHP: 7.1
+Requires at least: 5.8.4
+Tested up to: 6.0.2
+Stable tag: 4.6.12
+Requires PHP: 7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -117,14 +117,12 @@ The plugin is produced by <a href="https://evnt.is/2s">The Events Calendar</a>.
 = Current Contributors =
 
 <a href="https://profiles.wordpress.org/brianjessee">Brian Jessee</a>
-<a href="https://profiles.wordpress.org/mitogh">Crisoforo Gaspar</a>
 <a href="https://profiles.wordpress.org/geoffgraham">Geoff Graham</a>
 <a href="https://profiles.wordpress.org/bordoni">Gustavo Bordoni</a>
 <a href="https://profiles.wordpress.org/leahkoerper">Leah Koerper</a>
 <a href="https://profiles.wordpress.org/lucatume">Luca Tumedei</a>
 <a href="https://profiles.wordpress.org/borkweb">Matthew Batchelder</a>
 <a href="https://profiles.wordpress.org/neillmcshea">Neill McShea</a>
-<a href="https://profiles.wordpress.org/paulskim">Paul Kim</a>
 <a href="https://profiles.wordpress.org/camwynsp">Stephen Page</a>
 <a href="https://profiles.wordpress.org/vicskf">Victor Zarranz</a>
 <a href="https://profiles.wordpress.org/zbtirrell">Zachary Tirrell</a>
@@ -132,6 +130,7 @@ The plugin is produced by <a href="https://evnt.is/2s">The Events Calendar</a>.
 
 = Past Contributors =
 
+<a href="https://profiles.wordpress.org/mitogh">Crisoforo Gaspar</a>
 <a href="https://profiles.wordpress.org/ggwicz">George Gecewicz</a>
 <a href="https://profiles.wordpress.org/caseypatrickdriscoll">Casey Driscoll</a>
 <a href="https://profiles.wordpress.org/ckpicker">Casey Picker</a>
@@ -160,6 +159,7 @@ The plugin is produced by <a href="https://evnt.is/2s">The Events Calendar</a>.
 <a href="https://profiles.wordpress.org/joshlimecuda">Josh Mallard</a>
 <a href="https://profiles.wordpress.org/mastromktg">Nick Mastromattei</a>
 <a href="https://profiles.wordpress.org/nicosantos”>Nico Santo</a>
+<a href="https://profiles.wordpress.org/paulskim">Paul Kim</a>
 <a href="https://profiles.wordpress.org/peterchester">Peter Chester</a>
 <a href="https://profiles.wordpress.org/roblagatta">Rob La Gatta</a>
 <a href="https://profiles.wordpress.org/reid.peifer">Reid Peifer</a>
@@ -194,6 +194,10 @@ Our Premium Plugins:
 * <a href="https://evnt.is/fa" target="_blank">The Events Calendar: Filter Bar</a>
 
 == Changelog ==
+
+= [4.6.12] 2022-09-22 =
+
+* Fix - Correct some translation domains pointing to the wrong plugin. [EBT-137]
 
 = [4.6.11] 2022-05-19 =
 

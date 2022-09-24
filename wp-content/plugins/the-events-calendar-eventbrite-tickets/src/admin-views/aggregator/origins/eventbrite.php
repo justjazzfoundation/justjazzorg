@@ -3,19 +3,19 @@ $tab                = $this->tabs->get_active();
 $service            = tribe( 'events-aggregator.service' );
 $origin_slug        = 'eventbrite';
 $field              = (object) [];
-$field->label       = __( 'Import Type:', 'the-events-calendar' );
-$field->placeholder = __( 'Select Import Type', 'the-events-calendar' );
-$field->help        = __( 'One-time imports include all currently listed events, while scheduled imports automatically grab new events and updates from Eventbrite on a set schedule. Single events can be added via a one-time import.', 'the-events-calendar' );
+$field->label       = __( 'Import Type:', 'tribe-eventbrite' );
+$field->placeholder = __( 'Select Import Type', 'tribe-eventbrite' );
+$field->help        = __( 'One-time imports include all currently listed events, while scheduled imports automatically grab new events and updates from Eventbrite on a set schedule. Single events can be added via a one-time import.', 'tribe-eventbrite' );
 $field->source      = 'eventbrite_import_type';
 
 
 $frequency              = (object) [];
-$frequency->placeholder = __( 'Import from Eventbrite', 'the-events-calendar' );
+$frequency->placeholder = __( 'Import from Eventbrite', 'tribe-eventbrite' );
 $has_ebt_license        = ! empty( $service->api()->licenses['tribe-eventbrite'] );
 if ( $has_ebt_license ) {
-	$frequency->placeholder = __( 'Import from your Eventbrite account', 'the-events-calendar' );
+	$frequency->placeholder = __( 'Import from your Eventbrite account', 'tribe-eventbrite' );
 }
-$frequency->help   = __( 'Select how often you would like events to be automatically imported.', 'the-events-calendar' );
+$frequency->help   = __( 'Select how often you would like events to be automatically imported.', 'tribe-eventbrite' );
 $frequency->source = 'eventbrite_import_frequency';
 
 $cron        = Tribe__Events__Aggregator__Cron::instance();
@@ -39,12 +39,12 @@ if ( $missing_eventbrite_credentials ) :
 					<?php
 					esc_html_e(
 							'Please log in to enable event imports from Eventbrite.',
-							'the-events-calendar'
+							'tribe-eventbrite'
 					);
 					?>
 				</p>
 				<a class="tribe-ea-eventbrite-button tribe-ea-login-button"
-				   href="<?php echo esc_url( Tribe__Events__Aggregator__Record__Eventbrite::get_auth_url() ); ?>"><?php esc_html_e( 'Log into Eventbrite', 'the-events-calendar' ); ?></a>
+				   href="<?php echo esc_url( Tribe__Events__Aggregator__Record__Eventbrite::get_auth_url() ); ?>"><?php esc_html_e( 'Log into Eventbrite', 'tribe-eventbrite' ); ?></a>
 			</div>
 		</td>
 	</tr>
@@ -60,7 +60,7 @@ if ( $missing_eventbrite_credentials ) :
 		<?php if ( 'edit' === $aggregator_action ) : ?>
 			<input type="hidden" name="aggregator[eventbrite][import_type]" id="tribe-ea-field-eventbrite_import_type"
 				   value="schedule"/>
-			<strong class="tribe-ea-field-readonly"><?php echo esc_html__( 'Scheduled Import', 'the-events-calendar' ); ?></strong>
+			<strong class="tribe-ea-field-readonly"><?php echo esc_html__( 'Scheduled Import', 'tribe-eventbrite' ); ?></strong>
 		<?php else : ?>
 			<select
 					name="aggregator[eventbrite][import_type]"
@@ -70,8 +70,8 @@ if ( $missing_eventbrite_credentials ) :
 					data-hide-search
 					data-prevent-clear
 			>
-				<option value="manual"><?php echo esc_html__( 'One-Time Import', 'the-events-calendar' ); ?></option>
-				<option value="schedule"><?php echo esc_html__( 'Scheduled Import', 'the-events-calendar' ); ?></option>
+				<option value="manual"><?php echo esc_html__( 'One-Time Import', 'tribe-eventbrite' ); ?></option>
+				<option value="schedule"><?php echo esc_html__( 'Scheduled Import', 'tribe-eventbrite' ); ?></option>
 			</select>
 		<?php endif; ?>
 
@@ -127,23 +127,23 @@ if ( 'edit' === $tab->get_slug() ) {
 
 <?php
 $field              = (object) [];
-$field->label       = __( 'Import Source', 'the-events-calendar' );
-$field->placeholder = __( 'Select Source', 'the-events-calendar' );
+$field->label       = __( 'Import Source', 'tribe-eventbrite' );
+$field->placeholder = __( 'Select Source', 'tribe-eventbrite' );
 
-$field->help = esc_html__( 'Import events directly from your connected Eventbrite.com account or from a public Eventbrite.com URL.', 'the-events-calendar' );
+$field->help = esc_html__( 'Import events directly from your connected Eventbrite.com account or from a public Eventbrite.com URL.', 'tribe-eventbrite' );
 
 $default_eb_source = 'source_type_url';
 if ( $has_ebt_license ) {
 	$field->options[]  = [
 			'id'       => 'https://www.eventbrite.com/me',
-			'text'     => __( 'Import from your Eventbrite account', 'the-events-calendar' ),
+			'text'     => __( 'Import from your Eventbrite account', 'tribe-eventbrite' ),
 			'selected' => false,
 	];
 	$default_eb_source = 'https://www.eventbrite.com/me';
 }
 $field->options[] = [
 		'id'       => 'source_type_url',
-		'text'     => __( 'Import from Eventbrite URL', 'the-events-calendar' ),
+		'text'     => __( 'Import from Eventbrite URL', 'tribe-eventbrite' ),
 		'selected' => false,
 ];
 
@@ -178,9 +178,9 @@ $field->options[0]['selected'] = true;
 
 <?php
 $field              = (object) [];
-$field->label       = __( 'URL:', 'the-events-calendar' );
-$field->placeholder = __( 'eventbrite.com/e/example-12345', 'the-events-calendar' );
-$field->help        = __( 'Enter an Eventbrite event URL, e.g. https://www.eventbrite.com/e/example-12345', 'the-events-calendar' );
+$field->label       = __( 'URL:', 'tribe-eventbrite' );
+$field->placeholder = __( 'eventbrite.com/e/example-12345', 'tribe-eventbrite' );
+$field->help        = __( 'Enter an Eventbrite event URL, e.g. https://www.eventbrite.com/e/example-12345', 'tribe-eventbrite' );
 ?>
 <tr
 		class="tribe-dependent eb-url-row"
@@ -209,7 +209,7 @@ $field->help        = __( 'Enter an Eventbrite event URL, e.g. https://www.event
 				placeholder="<?php echo esc_attr( $field->placeholder ); ?>"
 				value="<?php echo esc_attr( empty( $record->meta['source'] ) ? '' : $record->meta['source'] ); ?>"
 				data-validation-match-regexp="<?php echo esc_attr( Tribe__Events__Aggregator__Record__Eventbrite::get_source_regexp() ); ?>"
-				data-validation-error="<?php esc_attr_e( 'Invalid Eventbrite URL', 'the-events-calendar' ); ?>"
+				data-validation-error="<?php esc_attr_e( 'Invalid Eventbrite URL', 'tribe-eventbrite' ); ?>"
 		>
 	</td>
 </tr>
@@ -219,7 +219,7 @@ $field->help        = __( 'Enter an Eventbrite event URL, e.g. https://www.event
 <tr class="tribe-dependent" data-depends="#tribe-ea-field-eventbrite_import_source" data-condition-not-empty>
 	<td colspan="2" class="tribe-button-row">
 		<button type="submit" class="button button-primary tribe-preview">
-			<?php esc_html_e( 'Preview', 'the-events-calendar' ); ?>
+			<?php esc_html_e( 'Preview', 'tribe-eventbrite' ); ?>
 		</button>
 	</td>
 </tr>

@@ -1,12 +1,12 @@
 <?php
 $keywords                = new stdClass();
-$keywords->placeholder   = __( 'Keyword(s)', 'the-events-calendar' );
+$keywords->placeholder   = __( 'Keyword(s)', 'tribe-eventbrite' );
 $location                = new stdClass();
-$location->placeholder   = __( 'Location', 'the-events-calendar' );
+$location->placeholder   = __( 'Location', 'tribe-eventbrite' );
 $start_date              = new stdClass();
-$start_date->placeholder = __( 'Date', 'the-events-calendar' );
+$start_date->placeholder = __( 'Date', 'tribe-eventbrite' );
 $radius                  = new stdClass();
-$radius->placeholder     = sprintf( _x( 'Radius (%s)', 'Radius with abbreviation', 'the-events-calendar' ), Tribe__Events__Utils__Radius::get_abbreviation() );
+$radius->placeholder     = sprintf( _x( 'Radius (%s)', 'Radius with abbreviation', 'tribe-eventbrite' ), Tribe__Events__Utils__Radius::get_abbreviation() );
 $depends_condition       = 'data-condition-not-empty';
 
 $location_depends = '#tribe-ea-field-origin';
@@ -24,7 +24,7 @@ $location_exclusions = [
 ];
 
 $depends          = '#tribe-ea-field-eventbrite_import_source';
-$radius->help     = __( 'Use the filters to narrow down which events are fetched from Eventbrite.', 'the-events-calendar' );
+$radius->help     = __( 'Use the filters to narrow down which events are fetched from Eventbrite.', 'tribe-eventbrite' );
 $location_depends = '#tribe-ea-field-eventbrite_import_source';
 $keyword_depends  = '#tribe-ea-field-eventbrite_import_source';
 
@@ -54,7 +54,7 @@ $location_exclusions = wp_json_encode( apply_filters( 'tribe_events_aggregator_r
 <tr class="tribe-dependent tribe-refine-filters <?php echo esc_attr( $origin_slug ); ?>"
 	data-depends="<?php echo esc_attr( $depends ); ?>" <?php echo esc_attr( $depends_condition ); ?>>
 	<th scope="row">
-		<label for="tribe-ea-field-refine_keywords"><?php esc_html_e( 'Refine:', 'the-events-calendar' ); ?></label>
+		<label for="tribe-ea-field-refine_keywords"><?php esc_html_e( 'Refine:', 'tribe-eventbrite' ); ?></label>
 	</th>
 	<td>
 		<div
@@ -91,7 +91,7 @@ $location_exclusions = wp_json_encode( apply_filters( 'tribe_events_aggregator_r
 					value="<?php echo esc_attr( $start ); ?>"
 					<?php if ( 'eventbrite' === $origin_slug ) : ?>
 						data-validation-is-required
-						data-validation-error="<?php esc_attr_e( 'Start date for Eventbrite Tickets is Required', 'the-events-calendar' ); ?>"
+						data-validation-error="<?php esc_attr_e( 'Start date for Eventbrite Tickets is Required', 'tribe-eventbrite' ); ?>"
 					<?php endif; ?>
 			>
 			<span
@@ -99,7 +99,7 @@ $location_exclusions = wp_json_encode( apply_filters( 'tribe_events_aggregator_r
 					data-depends="#tribe-ea-field-<?php echo esc_attr( $origin_slug ); ?>_start"
 					data-condition-not-empty
 			>
-				<?php esc_html_e( 'Events on or after', 'the-events-calendar' ); ?>
+				<?php esc_html_e( 'Events on or after', 'tribe-eventbrite' ); ?>
 				<span id="tribe-date-helper-date-<?php echo esc_attr( $origin_slug ); ?>">
 					<?php echo esc_html( $start ); ?>
 				</span>
