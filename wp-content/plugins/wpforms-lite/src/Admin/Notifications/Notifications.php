@@ -84,7 +84,6 @@ class Notifications {
 
 		$access = wpforms_current_user_can( 'view_forms' ) && ! wpforms_setting( 'hide-announcements' );
 
-		// phpcs:disable WPForms.PHP.ValidateHooks.InvalidHookName
 		/**
 		 * Allow modifying state if a user has access.
 		 *
@@ -93,7 +92,6 @@ class Notifications {
 		 * @param bool $access True if user has access.
 		 */
 		return (bool) apply_filters( 'wpforms_admin_notifications_has_access', $access );
-		// phpcs:enable WPForms.PHP.ValidateHooks.InvalidHookName
 	}
 
 	/**
@@ -394,6 +392,7 @@ class Notifications {
 	 * Update notification data from feed.
 	 *
 	 * @since 1.7.5
+	 * @since 1.7.8 Added `wp_cache_flush()` call when the option has been updated.
 	 */
 	public function update() {
 
@@ -416,7 +415,11 @@ class Notifications {
 		$data = (array) apply_filters( 'wpforms_admin_notifications_update_data', $data );
 		// phpcs:enable WPForms.PHP.ValidateHooks.InvalidHookName
 
-		update_option( 'wpforms_notifications', $data );
+		// Flush the cache after the option has been updated
+		// for the case when it earlier returns an old value without the new data from DB.
+		if ( update_option( 'wpforms_notifications', $data ) ) {
+			wp_cache_flush();
+		}
 	}
 
 	/**

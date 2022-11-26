@@ -377,6 +377,7 @@ class Newspack_Newsletters_Subscription {
 		$lists = apply_filters( 'newspack_newsletters_contact_lists', $lists, $contact, $provider->service );
 
 		$errors = new WP_Error();
+		$result = [];
 
 		if ( empty( $lists ) ) {
 			try {
@@ -465,13 +466,18 @@ class Newspack_Newsletters_Subscription {
 			return;
 		}
 		// Adding is actually upserting, so no need to check if the hook is called for an existing user.
-		self::add_contact(
-			[
-				'email'    => $email,
-				'metadata' => $metadata,
-			],
-			$lists
-		);
+		try {
+			self::add_contact(
+				[
+					'email'    => $email,
+					'metadata' => $metadata,
+				],
+				$lists
+			);
+		} catch ( \Exception $e ) {
+			// Avoid breaking the registration process.
+			Newspack_Newsletters_Logger::log( 'Error adding contact: ' . $e->getMessage() );
+		}
 	}
 
 	/**

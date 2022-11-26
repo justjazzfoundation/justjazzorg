@@ -270,6 +270,18 @@ function wpforms_setting( $key, $default = false, $option = 'wpforms_settings' )
 	$options = get_option( $option, false );
 	$value   = is_array( $options ) && ! empty( $options[ $key ] ) ? wp_unslash( $options[ $key ] ) : $default;
 
+	/**
+	 * Allows plugin setting to be modified.
+	 *
+	 * @since 1.7.8
+	 *
+	 * @param mixed  $value   Setting value.
+	 * @param string $key     Setting key.
+	 * @param mixed  $default Setting default value.
+	 * @param string $option  Settings option name.
+	 */
+	$value = apply_filters( 'wpforms_setting', $value, $key, $default, $option );
+
 	return $value;
 }
 
@@ -1520,6 +1532,8 @@ function wpforms_get_allowed_html_tags_for_richtext_field() {
 			'span',
 			'small',
 			'table',
+			'thead',
+			'tbody',
 			'th',
 			'tr',
 			'td',
@@ -1533,7 +1547,7 @@ function wpforms_get_allowed_html_tags_for_richtext_field() {
 			'div',
 		],
 		array_fill_keys(
-			[ 'align', 'class', 'id', 'style', 'src', 'rel', 'href', 'target', 'width', 'height', 'title', 'cite', 'start', 'reversed', 'datetime' ],
+			[ 'align', 'class', 'id', 'style', 'src', 'rel', 'alt', 'href', 'target', 'width', 'height', 'title', 'cite', 'start', 'reversed', 'datetime' ],
 			[]
 		)
 	);
@@ -1997,7 +2011,7 @@ function wpforms_debug_data( $data, $echo = true ) {
 			.wpforms-debug {
 				line-height: 0;
 			}
-			.wpforms-debug textarea { 
+			.wpforms-debug textarea {
 				background: #f6f7f7 !important;
 				margin: 20px 0 0 0;
 				width: 100%%;
@@ -2366,24 +2380,53 @@ function wpforms_get_day_period_date( $period, $timestamp = '', $format = 'Y-m-d
  * Return available date formats.
  *
  * @since 1.7.5
+ *
+ * @return array
  */
 function wpforms_date_formats() {
 
 	/**
 	 * Filters available date formats.
 	 *
-	 * @since 1.5.0
+	 * @since 1.3.0
 	 *
 	 * @param array $date_formats Default date formats.
 	 *                            Item key is JS date character - see https://flatpickr.js.org/formatting/
 	 *                            Item value is in PHP format - see http://php.net/manual/en/function.date.php.
 	 */
-	return apply_filters(
+	return (array) apply_filters(
 		'wpforms_datetime_date_formats',
 		[
 			'm/d/Y'  => 'm/d/Y',
 			'd/m/Y'  => 'd/m/Y',
 			'F j, Y' => 'F j, Y',
+		]
+	);
+}
+
+/**
+ * Return available time formats.
+ *
+ * @since 1.7.7
+ *
+ * @return array
+ */
+function wpforms_time_formats() {
+
+	/**
+	 * Filters available time formats.
+	 *
+	 * @since 1.5.9
+	 *
+	 * @param array $time_formats Default time formats.
+	 *                            Item key is in PHP format which it used in jquery.timepicker as well,
+	 *                            see http://php.net/manual/en/function.date.php.
+	 */
+	return (array) apply_filters(
+		'wpforms_datetime_time_formats',
+		[
+			'g:i A' => '12 H',
+			'H:i'   => '24 H',
 		]
 	);
 }
@@ -3494,9 +3537,9 @@ function wpforms_doing_wp_cli() {
  */
 function wpforms_get_default_user_agent() {
 
-	$wpforms_type = wpforms()->is_pro() ? 'Paid' : 'Lite';
+	$license_type = wpforms()->is_pro() ? ucwords( (string) wpforms_get_license_type() ) : 'Lite';
 
-	return 'WordPress/' . get_bloginfo( 'version' ) . '; ' . get_bloginfo( 'url' ) . '; WPForms/' . $wpforms_type;
+	return 'WordPress/' . get_bloginfo( 'version' ) . '; ' . get_bloginfo( 'url' ) . '; WPForms/' . $license_type . '-' . WPFORMS_VERSION;
 }
 
 /**

@@ -285,6 +285,10 @@ class Single_Event_Modifications {
 	 */
 	public function include_series_meta_details() {
 		$post = get_post();
+		if ( ! $post instanceof WP_Post ) {
+			return;
+		}
+
 		// The actual ID of the event is a fake one, make sure to use the real post ID.
 		if ( isset( $post->_tec_occurrence ) && $post->_tec_occurrence instanceof Occurrence ) {
 			$event_id = $post->_tec_occurrence->post_id;
@@ -360,7 +364,11 @@ class Single_Event_Modifications {
 	 * @return  array An array with the terms found.
 	 * @see   get_terms()
 	 */
-	public function redirect_get_terms( array $terms, ?array $taxonomies, array $args ): array {
+	public function redirect_get_terms( $terms, $taxonomies, $args ): array {
+		if ( ! ( is_array( $terms ) && is_array( $taxonomies ) && is_array( $args ) ) ) {
+			return $terms;
+		}
+
 		// This was already populated, move on.
 		if ( ! empty( $terms ) ) {
 			return $terms;

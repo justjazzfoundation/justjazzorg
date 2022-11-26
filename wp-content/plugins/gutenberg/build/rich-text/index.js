@@ -4,6 +4,18 @@
 /******/ 	var __webpack_require__ = {};
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -69,6 +81,7 @@ __webpack_require__.d(__webpack_exports__, {
   "toHTMLString": () => (/* reexport */ toHTMLString),
   "toggleFormat": () => (/* reexport */ toggleFormat),
   "unregisterFormatType": () => (/* reexport */ unregisterFormatType),
+  "useAnchor": () => (/* reexport */ useAnchor),
   "useAnchorRef": () => (/* reexport */ useAnchorRef)
 });
 
@@ -92,17 +105,10 @@ __webpack_require__.d(actions_namespaceObject, {
 
 ;// CONCATENATED MODULE: external ["wp","data"]
 const external_wp_data_namespaceObject = window["wp"]["data"];
-;// CONCATENATED MODULE: external "lodash"
-const external_lodash_namespaceObject = window["lodash"];
 ;// CONCATENATED MODULE: ./packages/rich-text/build-module/store/reducer.js
-/**
- * External dependencies
- */
-
 /**
  * WordPress dependencies
  */
-
 
 /**
  * Reducer managing the format types
@@ -127,7 +133,10 @@ function formatTypes() {
       };
 
     case 'REMOVE_FORMAT_TYPES':
-      return (0,external_lodash_namespaceObject.omit)(state, action.names);
+      return Object.fromEntries(Object.entries(state).filter(_ref => {
+        let [key] = _ref;
+        return !action.names.includes(key);
+      }));
   }
 
   return state;
@@ -439,7 +448,6 @@ function isShallowEqual(a, b, fromIndex) {
  * External dependencies
  */
 
-
 /**
  * Returns all the available format types.
  *
@@ -472,7 +480,7 @@ function getFormatType(state, name) {
  */
 
 function getFormatTypeForBareElement(state, bareElementTagName) {
-  return (0,external_lodash_namespaceObject.find)(getFormatTypes(state), _ref => {
+  return getFormatTypes(state).find(_ref => {
     let {
       className,
       tagName
@@ -490,7 +498,7 @@ function getFormatTypeForBareElement(state, bareElementTagName) {
  */
 
 function getFormatTypeForClassName(state, elementClassName) {
-  return (0,external_lodash_namespaceObject.find)(getFormatTypes(state), _ref2 => {
+  return getFormatTypes(state).find(_ref2 => {
     let {
       className
     } = _ref2;
@@ -505,10 +513,6 @@ function getFormatTypeForClassName(state, elementClassName) {
 
 ;// CONCATENATED MODULE: ./packages/rich-text/build-module/store/actions.js
 /**
- * External dependencies
- */
-
-/**
  * Returns an action object used in signalling that format types have been
  * added.
  *
@@ -516,11 +520,10 @@ function getFormatTypeForClassName(state, elementClassName) {
  *
  * @return {Object} Action object.
  */
-
 function addFormatTypes(formatTypes) {
   return {
     type: 'ADD_FORMAT_TYPES',
-    formatTypes: (0,external_lodash_namespaceObject.castArray)(formatTypes)
+    formatTypes: Array.isArray(formatTypes) ? formatTypes : [formatTypes]
   };
 }
 /**
@@ -534,7 +537,7 @@ function addFormatTypes(formatTypes) {
 function removeFormatTypes(names) {
   return {
     type: 'REMOVE_FORMAT_TYPES',
-    names: (0,external_lodash_namespaceObject.castArray)(names)
+    names: Array.isArray(names) ? names : [names]
   };
 }
 
@@ -1505,13 +1508,8 @@ function getActiveFormats(_ref) {
 
 ;// CONCATENATED MODULE: ./packages/rich-text/build-module/get-active-format.js
 /**
- * External dependencies
- */
-
-/**
  * Internal dependencies
  */
-
 
 /** @typedef {import('./create').RichTextValue} RichTextValue */
 
@@ -1531,8 +1529,13 @@ function getActiveFormats(_ref) {
  */
 
 function getActiveFormat(value, formatType) {
-  return (0,external_lodash_namespaceObject.find)(getActiveFormats(value), {
-    type: formatType
+  var _getActiveFormats;
+
+  return (_getActiveFormats = getActiveFormats(value)) === null || _getActiveFormats === void 0 ? void 0 : _getActiveFormats.find(_ref => {
+    let {
+      type
+    } = _ref;
+    return type === formatType;
   });
 }
 
@@ -3187,10 +3190,14 @@ function unregisterFormatType(name) {
 
 ;// CONCATENATED MODULE: external ["wp","element"]
 const external_wp_element_namespaceObject = window["wp"]["element"];
+;// CONCATENATED MODULE: external ["wp","deprecated"]
+const external_wp_deprecated_namespaceObject = window["wp"]["deprecated"];
+var external_wp_deprecated_default = /*#__PURE__*/__webpack_require__.n(external_wp_deprecated_namespaceObject);
 ;// CONCATENATED MODULE: ./packages/rich-text/build-module/component/use-anchor-ref.js
 /**
  * WordPress dependencies
  */
+
 
 /**
  * Internal dependencies
@@ -3224,6 +3231,10 @@ function useAnchorRef(_ref) {
     value,
     settings = {}
   } = _ref;
+  external_wp_deprecated_default()('`useAnchorRef` hook', {
+    since: '6.1',
+    alternative: '`useAnchor` hook'
+  });
   const {
     tagName,
     className,
@@ -3259,6 +3270,91 @@ function useAnchorRef(_ref) {
 
     return element.closest(tagName + (className ? '.' + className : ''));
   }, [activeFormat, value.start, value.end, tagName, className]);
+}
+
+;// CONCATENATED MODULE: ./packages/rich-text/build-module/component/use-anchor.js
+/**
+ * WordPress dependencies
+ */
+
+/**
+ * Internal dependencies
+ */
+
+
+/** @typedef {import('../register-format-type').RichTextFormatType} RichTextFormatType */
+
+/** @typedef {import('../create').RichTextValue} RichTextValue */
+
+/**
+ * @typedef {Object} VirtualAnchorElement
+ * @property {Function} getBoundingClientRect A function returning a DOMRect
+ * @property {Document} ownerDocument         The element's ownerDocument
+ */
+
+/**
+ * This hook, to be used in a format type's Edit component, returns the active
+ * element that is formatted, or a virtual element for the selection range if
+ * no format is active. The returned value is meant to be used for positioning
+ * UI, e.g. by passing it to the `Popover` component via the `anchor` prop.
+ *
+ * @param {Object}             $1                        Named parameters.
+ * @param {HTMLElement|null}   $1.editableContentElement The element containing
+ *                                                       the editable content.
+ * @param {RichTextValue}      $1.value                  Value to check for selection.
+ * @param {RichTextFormatType} $1.settings               The format type's settings.
+ * @return {Element|VirtualAnchorElement|undefined|null} The active element or selection range.
+ */
+
+function useAnchor(_ref) {
+  let {
+    editableContentElement,
+    value,
+    settings = {}
+  } = _ref;
+  const {
+    tagName,
+    className,
+    name
+  } = settings;
+  const activeFormat = name ? getActiveFormat(value, name) : undefined;
+  return (0,external_wp_element_namespaceObject.useMemo)(() => {
+    if (!editableContentElement) return;
+    const {
+      ownerDocument: {
+        defaultView
+      }
+    } = editableContentElement;
+    const selection = defaultView.getSelection();
+
+    if (!selection.rangeCount) {
+      return;
+    }
+
+    const selectionWithinEditableContentElement = editableContentElement === null || editableContentElement === void 0 ? void 0 : editableContentElement.contains(selection === null || selection === void 0 ? void 0 : selection.anchorNode);
+    const range = selection.getRangeAt(0);
+
+    if (!activeFormat) {
+      return {
+        ownerDocument: range.startContainer.ownerDocument,
+
+        getBoundingClientRect() {
+          return selectionWithinEditableContentElement ? range.getBoundingClientRect() : editableContentElement.getBoundingClientRect();
+        }
+
+      };
+    }
+
+    let element = range.startContainer; // If the caret is right before the element, select the next element.
+
+    element = element.nextElementSibling || element;
+
+    while (element.nodeType !== element.ELEMENT_NODE) {
+      element = element.parentNode;
+    }
+
+    return element.closest(tagName + (className ? '.' + className : ''));
+  }, [editableContentElement, activeFormat, value.start, value.end, tagName, className]);
 }
 
 ;// CONCATENATED MODULE: external ["wp","compose"]
@@ -3792,7 +3888,7 @@ function useInputAndSelection(props) {
           } = createRecord();
           record.current.activeFormats = use_input_and_selection_EMPTY_ACTIVE_FORMATS;
           onSelectionChange(offset);
-        } else if (element.contains(focusNode) && element !== focusNode) {
+        } else if (element.contains(focusNode)) {
           const {
             start,
             end: offset = start
@@ -4378,6 +4474,7 @@ function FormatEdit(_ref) {
 }
 
 ;// CONCATENATED MODULE: ./packages/rich-text/build-module/index.js
+
 
 
 

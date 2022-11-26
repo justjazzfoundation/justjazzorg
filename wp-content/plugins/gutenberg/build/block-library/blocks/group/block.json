@@ -15,12 +15,6 @@
 		"templateLock": {
 			"type": [ "string", "boolean" ],
 			"enum": [ "all", "insert", "contentOnly", false ]
-		},
-		"layout": {
-			"type": "object",
-			"default": {
-				"type": "constrained"
-			}
 		}
 	},
 	"supports": {
@@ -46,6 +40,9 @@
 				"padding": true,
 				"blockGap": true
 			}
+		},
+		"dimensions": {
+			"minHeight": true
 		},
 		"__experimentalBorder": {
 			"color": true,

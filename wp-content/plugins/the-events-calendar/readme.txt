@@ -3,9 +3,9 @@
 Contributors: theeventscalendar, borkweb, bordoni, brianjessee, aguseo, camwynsp, GeoffBel, jentheo, leahkoerper, lucatume, neillmcshea, vicskf, zbtirrell, juanfra
 Tags: events, calendar, event, schedule, organizer
 Donate link: https://evnt.is/29
-Requires at least: 5.8.4
-Stable tag: 6.0.1
-Tested up to: 6.0.2
+Requires at least: 5.8.6
+Stable tag: 6.0.4
+Tested up to: 6.1
 Requires PHP: 7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -229,6 +229,78 @@ Remember to always make a backup of your database and files before updating!
 
 == Changelog ==
 
+= [6.0.4] 2022-11-15 =
+
+* Version - The Events Calendar 6.0.4 is only compatible with Events Calendar PRO 6.0.3 and higher
+* Feature - Include Yoast WordPress SEO OpenGraph integration. [TEC-4558][TEC-4561]
+* Fix - Fix for fatal when adding Featured Venue Events widget on Appearance -> Widgets screen. [ECP-1411]
+* Fix - Fix for fatal error on Series page in PHP 7.3. [TEC-4549]
+* Fix - Prevent error around Free regular expression for JSON-LD on updated views. Props @jonkastonka @saleck @randon [TEC-4570]
+* Fix - Avoid fatal error when using PHP version 8.0 or above and the HyperDB plugin. [ECP-1360]
+* Fix - Ensure view labels are translated appropriately. [TEC-4485]
+* Fix - Errors and warnings in WP.com installations due to empty query results. [TEC-4543]
+* Fix - Translation of Event Occurrences URL when using WPML and the Custom Tables V1 implementation. [ECP-1373]
+* Fix - More robust type checking in Builder methods. [ECP-1402]
+* Fix - Avoid `orderby` related database error in Custom Tables V1 context. [TEC-4555]
+* Fix - Prevent error when updating Venue in sites using object cache. [TEC-4348]
+* Fix - Prevent date format error when trying to subscribe to calendar in sites using object cache. [TEC-4459]
+* Tweak - Clean up the Event Website block to make it more intuitive for users. [TEC-4352]
+* Tweak - Update the venue website field to type URL. [TEC-4349]
+* Tweak - Do not add date-based ordering to queries when using `none` or `rand` order. [TEC-4555]
+* Tweak - Added filters: `tec_events_integrations_should_load`, `tec_events_integrations_{$type}_should_load`, `tec_events_integrations_{$type}_{$slug}_should_load`, `tec_events_integrations_{$integration_type}_{$integration_slug}_events_schema_is_needed`, `tec_events_integrations_{$integration_type}_{$integration_slug}_json_ld_{$type}_data`, `tec_events_views_v2_view_label`, `tec_events_views_v2_{$slug}_view_label`
+* Tweak - Removed filters: `tribe_events_views`, `tribe_events_views_v2_manager_view_label_domain`, `tribe_events_views_v2_manager_{$slug}_view_label_domain`, `tribe_events_views_v2_manager_view_label`, `tribe_events_views_v2_manager_{$slug}_view_label`
+* Language - 3 new strings added, 144 updated, 0 fuzzied, and 0 obsoleted.
+
+= [6.0.3.1] 2022-11-03 =
+
+* Fix - Correct issues where early queries can interfere with View template redirects. [TEC-4554]
+* Fix - Serialization and unserialization issues related to caching of post models. [TEC-4379]
+* Fix - Prevent default WordPress occurrence query caching because we cache it ourselves. [TEC-4379]
+* Tweak - Add the `tribe_get_venue_object_after` and `tribe_get_organizer_object_after` filters. [TEC-4379]
+
+= [6.0.3] 2022-10-31 =
+
+* Fix - Handle repository query filters correctly in custom tables context; fix a REST API issue. [ET-1567]
+
+= [6.0.2] 2022-10-20 =
+
+* Feature - Add initial integration with Restrict Content Pro. This hides any events on the calendar views that the user is not allowed to view. [ [TEC-4457]]
+* Feature - Support the `strict_dates` REST API argument in the `/events` endpoint to control the inclusiveness of the date parameters. [TEC-4493]
+* Feature - Support relative date parameters (e.g: `starts_before`, `ends_after` as REST API arguments in the `/events` endpoint to retrieve single day and multi-day events in a single search. [TEC-4493]
+* Fix - Prevent problems with WordPress.com Memcache turning Event Single Pages into 404s after the first visit [TEC-4488]
+* Fix - Add new function to properly escape event titles in URLs so they are better handled by rewrite rules. Props to @shisho585 for the fix! [TEC-4518]
+* Fix - Avoid resetting post data in some Dive theme and plugins. [TEC-4510]
+* Fix - Correct a few misnamed custom prop references. [TEC-4445]
+* Fix - Correct an issue with event venue when saving in our WPML integration. Props to @dgwatkins for the fix! [TEC-4498]
+* Fix - Correctly deprecate the `Tribe__Events__Main::get_closest_event` method. [ECP-1326]
+* Fix - Correctly set `found_posts` and `max_num_pages` when redirecting a query to the custom tables. [TEC-4508]
+* Fix - Do not run wasteful queries on `switch_blog` in multi-site installations. [TEC-4492]
+* Fix - Do not throw errors during migration when notices or errors come from other plugins. [ECP-1318]
+* Fix - Ensure `tribe_is_month` and `tribe_is_by_date` work as expected. [TEC-4509]
+* Fix - Ensure we handle if By_Day_View gets a null $event_obj->dates. Props to @juliangumenita for the fix! [TEC-4509]
+* Fix - Remove strict type hinting from Custom Tables v1 code that would cause fatals in some environments. [ECP-1343]
+* Fix - Resolve problems with tribe_get_full_address() which was not properly returning venue address.
+* Fix - Restore erroneously removed Events query filters that would result in out-of-order results. [TEC-4470]
+* Fix - Revert the code erroneous removed on legacy views removal around the "Show events with the site's other posts" setting.
+* Fix - Prevent a potential fatal when WP-CLI isn't present. [TEC-4470]
+* Tweak - Move Month View day cell class logic to a standalone function with filters. [TEC-4457]
+* Tweak - Add new method: `\Tribe\Events\Views\V2\month_day_classes` [TEC-4457]
+* Tweak - Added filter `tec_events_month_day_classes_comparison_date` to filter the date used for class determination comparisons. [TEC-4457]
+* Tweak - Added filter `tec_events_month_day_classes` to filter the actual class list before it gets passed to the template. [TEC-4457]
+* Tweak - Update the organizer website field to type URL. [TEC-4395]
+* Tweak - Add an event property for if the event is currently happening. [TEC-4454]
+* Tweak - Create a filterable function `tec_events_get_today_button_label()` for the text on the "Today" button on calendar views. [TEC-4458]
+* Tweak - Add a filter for the link title and aria-label so they match the button text more closely. [TEC-4458]
+* Tweak - Added filters: `tec_events_today_button_label` and `tec_events_view_{view_slug}_today_button_label` to filter the output of the `tec_events_get_today_button_label` function
+                         `tec_events_today_button_title` and `tec_events_{view_slug}_view_today_button_title` to filter the link title and aria-label. [TEC-4458]
+* Tweak - Speed up the Custom Tables v1 migration process if a browser window is open on the migration UI. [TEC-4517]
+* Language - 11 new strings added, 149 updated, 2 fuzzied, and 2 obsoleted.
+
+
+= [6.0.1.1] 2022-09-29 =
+
+* Fix - Prevent Google Calendar duplicated Events from Importing with Aggregator. [TEC-4497]
+
 = [6.0.1] 2022-09-22 =
 
 * Fix - Prevent network deactivation from overwriting the subsite settings with main site cached settings. [TEC-3738]
@@ -344,7 +416,7 @@ Remember to always make a backup of your database and files before updating!
 
 = [5.15.0.1] 2022-05-23 =
 
-* Fix - Prevent fatal when using Yoast due to missing function `tribe_is_month()` [BTRIA-1243]
+* Fix - Prevent fatal when using Yoast due to missing function `tribe_is_month()` [TEC-4376]
 * Fix - Check if function exists for `get_current_screen` to avoid a fatal if not.
 
 = [5.15.0] 2022-05-19 =

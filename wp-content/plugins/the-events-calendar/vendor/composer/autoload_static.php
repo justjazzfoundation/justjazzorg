@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitb894359d15008797e6ddab61567f70cd
+class ComposerStaticInit9c88f16d322b1b16c8304a39b77ea5c7
 {
     public static $prefixLengthsPsr4 = array (
         'T' => 
@@ -143,6 +143,12 @@ class ComposerStaticInitb894359d15008797e6ddab61567f70cd
         'TEC\\Events\\Editor\\Full_Site\\Hooks' => __DIR__ . '/../..' . '/src/Events/Editor/Full_Site/Hooks.php',
         'TEC\\Events\\Editor\\Full_Site\\Provider' => __DIR__ . '/../..' . '/src/Events/Editor/Full_Site/Provider.php',
         'TEC\\Events\\Editor\\Full_Site\\Templates' => __DIR__ . '/../..' . '/src/Events/Editor/Full_Site/Templates.php',
+        'TEC\\Events\\Integrations\\Integration_Abstract' => __DIR__ . '/../..' . '/src/Events/Integrations/Integration_Abstract.php',
+        'TEC\\Events\\Integrations\\Plugins\\Plugin_Integration' => __DIR__ . '/../..' . '/src/Events/Integrations/Plugins/Plugin_Integration.php',
+        'TEC\\Events\\Integrations\\Plugins\\WordPress_SEO\\Events_Schema' => __DIR__ . '/../..' . '/src/Events/Integrations/Plugins/WordPress_SEO/Events_Schema.php',
+        'TEC\\Events\\Integrations\\Plugins\\WordPress_SEO\\Provider' => __DIR__ . '/../..' . '/src/Events/Integrations/Plugins/WordPress_SEO/Provider.php',
+        'TEC\\Events\\Integrations\\Provider' => __DIR__ . '/../..' . '/src/Events/Integrations/Provider.php',
+        'TEC\\Events\\Integrations\\Themes\\Theme_Integration' => __DIR__ . '/../..' . '/src/Events/Integrations/Themes/Theme_Integration.php',
         'TEC\\Events\\Legacy\\Views\\V1\\Provider' => __DIR__ . '/../..' . '/src/Events/Legacy/Views/V1/Provider.php',
         'Tribe\\Events\\Admin\\Filter_Bar\\Provider' => __DIR__ . '/../..' . '/src/Tribe/Admin/Filter_Bar/Provider.php',
         'Tribe\\Events\\Admin\\Notice\\Full_Site_Editor' => __DIR__ . '/../..' . '/src/Tribe/Admin/Notice/Full_Site_Editor.php',
@@ -181,6 +187,7 @@ class ComposerStaticInitb894359d15008797e6ddab61567f70cd
         'Tribe\\Events\\Integrations\\Fusion\\Widget_Shortcode' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Fusion/Widget_Shortcode.php',
         'Tribe\\Events\\Integrations\\Hello_Elementor\\Service_Provider' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Hello_Elementor/Service_Provider.php',
         'Tribe\\Events\\Integrations\\Hello_Elementor\\Templates' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Hello_Elementor/Templates.php',
+        'Tribe\\Events\\Integrations\\Restrict_Content_Pro\\Service_Provider' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Restrict_Content_Pro/Service_Provider.php',
         'Tribe\\Events\\Integrations\\WPML\\Views\\V2\\Filters' => __DIR__ . '/../..' . '/src/Tribe/Integrations/WPML/Views/V2/Filters.php',
         'Tribe\\Events\\Integrations\\WP_Rocket' => __DIR__ . '/../..' . '/src/Tribe/Integrations/WP_Rocket.php',
         'Tribe\\Events\\Models\\Post_Types\\Event' => __DIR__ . '/../..' . '/src/Tribe/Models/Post_Types/Event.php',
@@ -267,14 +274,15 @@ class ComposerStaticInitb894359d15008797e6ddab61567f70cd
         'Tribe\\Events\\Views\\V2\\iCalendar\\Template' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/iCalendar/Template.php',
         'Tribe\\Events\\Views\\V2\\iCalendar\\Traits\\Outlook_Methods' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/iCalendar/Traits/Outlook_Methods.php',
         'Tribe\\Events\\Views\\V2\\iCalendar\\iCalendar_Handler' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/iCalendar/iCalendar_Handler.php',
+        'Tribe__Events__Main_Deprecated' => __DIR__ . '/../..' . '/src/deprecated/Traits/Tribe__Events__Main_Deprecated.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitb894359d15008797e6ddab61567f70cd::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitb894359d15008797e6ddab61567f70cd::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitb894359d15008797e6ddab61567f70cd::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit9c88f16d322b1b16c8304a39b77ea5c7::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit9c88f16d322b1b16c8304a39b77ea5c7::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit9c88f16d322b1b16c8304a39b77ea5c7::$classMap;
 
         }, null, ClassLoader::class);
     }

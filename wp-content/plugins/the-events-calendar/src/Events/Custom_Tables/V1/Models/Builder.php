@@ -758,15 +758,27 @@ class Builder {
 	 * Limit the results from a query to a single result and return the first instance if available otherwise null.
 	 *
 	 * @since 6.0.0
-	 * @return Model|null
+	 *
+	 * @return Model|array|null The requested model in the required format, or `null` if the model could not be found.
 	 */
 	public function first() {
 		$results = $this->limit( 1 )->get();
+
 		if ( empty( $results ) ) {
 			return null;
 		}
 
-		return reset( $results );
+		$result = reset( $results );
+
+		switch ( $this->output_format ) {
+			case OBJECT:
+			default:
+				return $result instanceof $this->model ? $result : null;
+			case ARRAY_N:
+				return is_array( $result ) ? array_values( $result ) : null;
+			case ARRAY_A:
+				return is_array( $result ) ? $result : null;
+		}
 	}
 
 	/**
@@ -1063,7 +1075,7 @@ class Builder {
 	 * @return $this
 	 */
 	public function order_by( $column = null, $order = 'ASC' ) {
-		if ( in_array( $order, [ 'ASC', 'DESC' ], true ) ) {
+		if ( in_array( strtoupper( $order ), [ 'ASC', 'DESC' ], true ) ) {
 			$this->order = [
 				'column' => null === $column ? $this->model->primary_key_name() : $column,
 				'order'  => $order,

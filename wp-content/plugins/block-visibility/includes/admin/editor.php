@@ -88,7 +88,7 @@ function enqueue_editor_styles() {
 		$custom_color = get_plugin_setting( 'contextual_indicator_color' );
 
 		if ( $custom_color ) {
-			$inline_style = '.block-visibility__has-visibility, .block-visibility__has-visibility.components-placeholder.components-placeholder, .block-visibility__has-visibility.components-placeholder { outline-color: ' . $custom_color . ' } .block-visibility__has-visibility::after { background-color: ' . $custom_color . ' }';
+			$inline_style = '.block-visibility__has-visibility:not(.is-selected):not(.has-child-selected), .block-visibility__has-visibility.components-placeholder.components-placeholder:not(.is-selected):not(.has-child-selected), .block-visibility__has-visibility.components-placeholder:not(.is-selected):not(.has-child-selected) { outline-color: ' . $custom_color . ' } .block-visibility__has-visibility:not(.is-selected):not(.has-child-selected)::after { background-color: ' . $custom_color . ' }';
 
 			wp_add_inline_style(
 				'block-visibility-contextual-indicator-styles',
@@ -104,7 +104,7 @@ function enqueue_editor_styles() {
 
 		if ( $block_opacity ) {
 			$opacity      = intval( $block_opacity ) * 0.01;
-			$inline_style = '.block-visibility__has-visibility:not(.is-selected):not(.has-child-selected) > * { opacity: ' . $opacity . ' }';
+			$inline_style = '.block-visibility__has-visibility:not(.is-selected):not(.has-child-selected) > *:not(.wp-block-cover__background) { opacity: ' . $opacity . ' }';
 
 			wp_add_inline_style(
 				'block-visibility-editor-styles',

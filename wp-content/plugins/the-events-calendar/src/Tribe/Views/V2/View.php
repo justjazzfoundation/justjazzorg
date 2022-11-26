@@ -50,13 +50,6 @@ class View implements View_Interface {
 	protected static $container;
 
 	/**
-	 * The slug of the not found view.
-	 *
-	 * @var string
-	 */
-	protected $not_found_slug;
-
-	/**
 	 * An instance of the context the View will use to render, if any.
 	 *
 	 * @var Context
@@ -70,7 +63,7 @@ class View implements View_Interface {
 	 *
 	 * @var string
 	 */
-	protected $slug = '';
+	protected $slug = 'view';
 
 	/**
 	 * The template slug the View instance will use to locate its template files.
@@ -170,7 +163,7 @@ class View implements View_Interface {
 	protected $should_manage_url = true;
 
 	/**
-	 * An collection of user-facing messages the View should display.
+	 * A collection of user-facing messages the View should display.
 	 *
 	 * @since 4.9.11
 	 *
@@ -225,6 +218,16 @@ class View implements View_Interface {
 	protected $cached_urls = [];
 
 	/**
+	 * The translated label string for the view.
+	 * Subject to later filters.
+	 *
+	 * @since 6.0.4
+	 *
+	 * @var string
+	 */
+	protected static $label = 'View';
+
+	/**
 	 * View constructor.
 	 *
 	 * @since 4.9.11
@@ -233,7 +236,8 @@ class View implements View_Interface {
 	 */
 	public function __construct( Messages $messages = null ) {
 		$this->messages = $messages ?: new Messages();
-		$this->rewrite = TEC_Rewrite::instance();
+		$this->rewrite  = TEC_Rewrite::instance();
+
 
 		// For plain permalinks, the pagination variable is "page".
 		if ( $this->rewrite->is_plain_permalink() ) {
@@ -664,10 +668,58 @@ class View implements View_Interface {
 	}
 
 	/**
+	 * Returns the view label value after filtering.
+	 *
+	 * This is the method you want to overwrite to replace the label for a view with translations.
+	 *
+	 * @since 6.0.4
+	 *
+	 * @return string
+	 */
+	public static function get_view_label(): string {
+		return static::filter_view_label( static::$label );
+	}
+
+	/**
+	 * Filters the view label value allowing changes to be made.
+	 *
+	 * @since 6.0.4
+	 *
+	 * @param string $label Which label we are filtering for.
+	 *
+	 * @return string
+	 */
+	protected static function filter_view_label( string $label ): string {
+		/**
+		 * On the next feature version we need to remove.
+		 */
+		$slug = tribe( Manager::class )->get_view_slug_by_class( self::class );
+
+		/**
+		 * Filters the label that will be used on the UI for views listing.
+		 *
+		 * @since 6.0.4
+		 *
+		 * @param string $label        Label of the Current view.
+		 * @param string $slug         Slug of the view we are getting the label for.
+		 */
+		$label = apply_filters( 'tec_events_views_v2_view_label', $label, $slug );
+
+		/**
+		 * Filters the label that will be used on the UI for views listing.
+		 *
+		 * @since 6.0.4
+		 *
+		 * @param string $label        Label of the Current view.
+		 */
+		return (string) apply_filters( "tec_events_views_v2_{$slug}_view_label", $label );
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public function get_label() {
-		return tribe( Manager::class )->get_view_label_by_slug( $this->get_slug() );
+		return static::get_view_label();
 	}
 
 	/**
@@ -1493,6 +1545,42 @@ class View implements View_Interface {
 
 		$today_url      = $this->get_today_url( true );
 		$today          = $this->context->get( 'today', 'today' );
+		// The "Today" button title and aria-label text.
+		$today_title    = _x(
+			'Click to select today\'s date',
+			'The default title text for the today button.',
+			'the-events-calendar'
+		);
+
+		/**
+		 * Allows filtering of the "Today" button title and aria-label.
+		 *
+		 * @since 6.0.2
+		 *
+		 * @param string                                $today_title The title string.
+		 * @param \Tribe\Events\Views\V2\View_Interface $view        The View currently rendering.
+		 */
+		$today_title = apply_filters(
+			'tec_events_today_button_title',
+			$today_title,
+			$this
+		);
+
+		/**
+		 * Allows filtering of the "Today" button title and aria-label.
+		 *
+		 * @since 6.0.2
+		 *
+		 * @param string                                $today_title The title string.
+		 * @param \Tribe\Events\Views\V2\View_Interface $view        The View currently rendering.
+		 */
+		$today_title = apply_filters(
+			'tec_events_view_' . $this->slug . '_today_button_title',
+			$today_title,
+			$this
+		);
+
+		$today_label = tec_events_get_today_button_label( $this );
 
 		$event_date = $this->context->get( 'event_date', false );
 
@@ -1535,6 +1623,8 @@ class View implements View_Interface {
 			'rest_nonce'           => $rest_nonce,
 			'should_manage_url'    => $this->should_manage_url,
 			'today_url'            => $today_url,
+			'today_title'          => $today_title,
+			'today_label'          => $today_label,
 			'prev_label'           => $this->get_link_label( $this->prev_url( false ) ),
 			'next_label'           => $this->get_link_label( $this->next_url( false ) ),
 			'date_formats'         => (object) [

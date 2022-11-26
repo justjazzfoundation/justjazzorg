@@ -74,13 +74,6 @@ class Admin_Menu {
 		/* Render admin content view */
 		add_action( 'uag_render_admin_page_content', array( $this, 'render_content' ), 10, 2 );
 
-		/* Action to get total blocks count */
-		if ( function_exists( 'as_enqueue_async_action' ) && 'done' !== get_option( 'spectra_blocks_count_status' ) ) {
-
-			as_enqueue_async_action( 'spectra_total_blocks_count_action' );
-			update_option( 'spectra_blocks_count_status', 'processing' );
-		}
-
 	}
 
 	/**
@@ -113,14 +106,25 @@ class Admin_Menu {
 			add_filter( 'admin_footer_text', array( $this, 'add_footer_link' ), 99 );
 		}
 
-		if ( 'done' === get_option( 'spectra_blocks_count_status' ) ) {
+		$count_status = get_option( 'spectra_blocks_count_status' );
 
-			if ( function_exists( 'as_next_scheduled_action' ) && false === \as_next_scheduled_action( 'spectra_analytics_count_actions' ) ) {
-
-				// It will automatically reschedule the action once initiated.
-				as_schedule_recurring_action( strtotime( 'now' ), 2 * WEEK_IN_SECONDS, 'spectra_analytics_count_actions' );
+		// Set transient for triggering analytics action.
+		$action_transient = (bool) get_transient( 'spectra_analytics_action' );
+		if ( 'done' === $count_status ) {
+			$action_transient = (bool) get_transient( 'spectra_analytics_action' );
+			if ( false === $action_transient ) {
+				set_transient( 'spectra_analytics_action', $count_status, 2 * WEEK_IN_SECONDS );
+				do_action( 'spectra_analytics_complete_action' );
 			}
 		}
+
+		// Set transient for triggering the block count action.
+		$count_transient = (bool) get_transient( 'spectra_background_process_action' );
+		if ( 'done' !== $count_status && false === $count_transient ) {
+			do_action( 'spectra_total_blocks_count_action' );
+			set_transient( 'spectra_background_process_action', 'done', 4 * WEEK_IN_SECONDS );
+		}
+
 	}
 
 	/**

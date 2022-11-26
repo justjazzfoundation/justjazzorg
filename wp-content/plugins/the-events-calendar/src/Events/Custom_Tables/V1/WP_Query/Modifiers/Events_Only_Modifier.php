@@ -58,14 +58,15 @@ class Events_Only_Modifier extends Base_Modifier {
 	 *
 	 * @return null|array<WP_Post|int> The filtered value of the posts, injected before the query actually runs.
 	 */
-	public function filter_posts_pre_query( $posts = null, WP_Query $wp_query = null ) {
-		if ( ! $this->is_target_query( $wp_query ) ) {
+	public function filter_posts_pre_query( $posts = null, $wp_query = null ) {
+		if ( ! ( $wp_query instanceof WP_Query && $this->is_target_query( $wp_query ) ) ) {
 			return $posts;
 		}
 
-		if ( null !== $posts ) {
-			$this->unhook();
+		// This modifier should stop filtering queries, since this is the one to filter.
+		$this->unhook();
 
+		if ( null !== $posts ) {
 			// If something already intervened in the filter, then bail and do not touch the query at all.
 			return $posts;
 		}
@@ -90,7 +91,16 @@ class Events_Only_Modifier extends Base_Modifier {
 
 		$this->done();
 
-		return $posts;
+		/**
+		 * Allow filtering just for when applied the Events Only Modifier.
+		 *
+		 * @since 6.0.2
+		 *
+		 * @param WP_Query|null           $wp_query    A reference to the `WP_Query` instance that is currently running.
+		 * @param array<WP_Post|int>|null $posts       The filter input value, it could have already be filtered by other
+		 *                                             plugins at this stage.
+		 */
+		return apply_filters( 'tec_events_custom_tables_v1_events_only_modifier_filter_posts_pre_query', $posts, $wp_query );
 	}
 
 	/**

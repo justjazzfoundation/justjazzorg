@@ -64,6 +64,7 @@ use WP_Error;
 use Exception;
 use Google\Site_Kit\Core\Modules\Module_With_Service_Entity;
 use Google\Site_Kit\Core\Util\BC_Functions;
+use Google\Site_Kit\Core\Util\URL;
 
 /**
  * Class representing the Analytics module.
@@ -710,7 +711,7 @@ final class Analytics extends Module
 					);
 				}
 				$property = new Google_Service_Analytics_Webproperty();
-				$property->setName( wp_parse_url( $this->context->get_reference_site_url(), PHP_URL_HOST ) );
+				$property->setName( URL::parse( $this->context->get_reference_site_url(), PHP_URL_HOST ) );
 				$property->setWebsiteUrl( $this->context->get_reference_site_url() );
 				return $this->get_service( 'analytics' )->management_webproperties->insert( $data['accountID'], $property );
 		}
@@ -951,7 +952,7 @@ final class Analytics extends Module
 			array_unique(
 				array_map(
 					function ( $site_url ) {
-						return wp_parse_url( $site_url, PHP_URL_HOST );
+						return URL::parse( $site_url, PHP_URL_HOST );
 					},
 					$this->permute_site_url( $this->context->get_reference_site_url() )
 				)
@@ -1198,6 +1199,7 @@ final class Analytics extends Module
 						'googlesitekit-datastore-site',
 						'googlesitekit-datastore-user',
 						'googlesitekit-datastore-forms',
+						'googlesitekit-components',
 					),
 				)
 			),
@@ -1244,7 +1246,7 @@ final class Analytics extends Module
 		if ( $tag->can_register() ) {
 			$tag->set_anonymize_ip( $settings['anonymizeIP'] );
 			$tag->set_home_domain(
-				wp_parse_url( $this->context->get_canonical_home_url(), PHP_URL_HOST )
+				URL::parse( $this->context->get_canonical_home_url(), PHP_URL_HOST )
 			);
 			$tag->set_ads_conversion_id( $settings['adsConversionID'] );
 
@@ -1391,12 +1393,10 @@ final class Analytics extends Module
 		);
 
 		if ( count( $invalid_metrics ) > 0 ) {
-			$message = sprintf(
-				/* translators: %s is replaced with a comma separated list of the invalid metrics. */
-				_n(
-					'Unsupported metric requested: %s',
+			$message = count( $invalid_metrics ) > 1 ? sprintf(
+				/* translators: %s: is replaced with a comma separated list of the invalid metrics. */
+				__(
 					'Unsupported metrics requested: %s',
-					count( $invalid_metrics ),
 					'google-site-kit'
 				),
 				join(
@@ -1404,6 +1404,13 @@ final class Analytics extends Module
 					__( ', ', 'google-site-kit' ),
 					$invalid_metrics
 				)
+			) : sprintf(
+				/* translators: %s: is replaced with the invalid metric. */
+				__(
+					'Unsupported metric requested: %s',
+					'google-site-kit'
+				),
+				$invalid_metrics
 			);
 
 			throw new Invalid_Report_Metrics_Exception( $message );
@@ -1447,12 +1454,10 @@ final class Analytics extends Module
 		);
 
 		if ( count( $invalid_dimensions ) > 0 ) {
-			$message = sprintf(
-				/* translators: %s is replaced with a comma separated list of the invalid dimensions. */
-				_n(
-					'Unsupported dimension requested: %s',
+			$message = count( $invalid_dimensions ) > 1 ? sprintf(
+				/* translators: %s: is replaced with a comma separated list of the invalid dimensions. */
+				__(
 					'Unsupported dimensions requested: %s',
-					count( $invalid_dimensions ),
 					'google-site-kit'
 				),
 				join(
@@ -1460,6 +1465,13 @@ final class Analytics extends Module
 					__( ', ', 'google-site-kit' ),
 					$invalid_dimensions
 				)
+			) : sprintf(
+				/* translators: %s: is replaced with the invalid dimension. */
+				__(
+					'Unsupported dimension requested: %s',
+					'google-site-kit'
+				),
+				$invalid_dimensions
 			);
 
 			throw new Invalid_Report_Dimensions_Exception( $message );

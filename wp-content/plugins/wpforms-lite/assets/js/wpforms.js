@@ -116,7 +116,7 @@ var wpforms = window.wpforms || ( function( document, window, $ ) {
 				} );
 
 				// Prepend URL field contents with https:// if user input doesn't contain a schema.
-				$( '.wpforms-validate input[type=url]' ).change( function() {
+				$( document ).on( 'change', '.wpforms-validate input[type=url]', function() {
 					var url = $( this ).val();
 					if ( ! url ) {
 						return false;
@@ -250,7 +250,6 @@ var wpforms = window.wpforms || ( function( document, window, $ ) {
 							isValid = response.success && response.data;
 
 							if ( isValid ) {
-								validator.resetInternals();
 								validator.toHide = validator.errorsFor( element );
 								validator.showErrors();
 							} else {
@@ -683,7 +682,7 @@ var wpforms = window.wpforms || ( function( document, window, $ ) {
 						};
 					}
 
-					// Redefine locale only if user doesn't do that manually and we have the locale.
+					// Redefine locale only if user doesn't do that manually, and we have the locale.
 					if (
 						! properties.hasOwnProperty( 'locale' ) &&
 						typeof wpforms_settings !== 'undefined' &&
@@ -782,11 +781,12 @@ var wpforms = window.wpforms || ( function( document, window, $ ) {
 				return;
 			}
 
-			$( '.wpforms-masked-input' ).inputmask();
+			// This setting has no effect when switching to the "RTL" mode.
+			$( '.wpforms-masked-input' ).inputmask( { rightAlign: false } );
 		},
 
 		/**
-		 * Load smart phone field.
+		 * Load Smart Phone field.
 		 *
 		 * @since 1.5.2
 		 */
@@ -864,7 +864,7 @@ var wpforms = window.wpforms || ( function( document, window, $ ) {
 		 */
 		loadPayments: function() {
 
-			// Update Total field(s) with latest calculation.
+			// Update Total field(s) with the latest calculation.
 			$( '.wpforms-payment-total' ).each( function( index, el ) {
 				app.amountTotal( this );
 			} );
@@ -1046,7 +1046,7 @@ var wpforms = window.wpforms || ( function( document, window, $ ) {
 							}
 
 							// Add a `data-amount` attribute for payment dropdown.
-							// It will be copy from a Choices.js `data-custom-properties` attribute.
+							// It will be a copy from a Choices.js `data-custom-properties` attribute.
 							if ( $element.hasClass( 'wpforms-payment-price' ) && 'undefined' !== typeof item.customProperties && null !== item.customProperties ) {
 								opt.dataset.amount = item.customProperties;
 							}
@@ -1111,16 +1111,13 @@ var wpforms = window.wpforms || ( function( document, window, $ ) {
 			} );
 
 			// Rating field: hover effect.
-			$( '.wpforms-field-rating-item' ).hover(
-				function() {
-					$( this ).parent().find( '.wpforms-field-rating-item' ).removeClass( 'selected hover' );
-					$( this ).prevAll().addBack().addClass( 'hover' );
-				},
-				function() {
-					$( this ).parent().find( '.wpforms-field-rating-item' ).removeClass( 'selected hover' );
-					$( this ).parent().find( 'input:checked' ).parent().prevAll().addBack().addClass( 'selected' );
-				}
-			);
+			$( document ).on( 'mouseenter', '.wpforms-field-rating-item', function() {
+				$( this ).parent().find( '.wpforms-field-rating-item' ).removeClass( 'selected hover' );
+				$( this ).prevAll().addBack().addClass( 'hover' );
+			} ).on( 'mouseleave', '.wpforms-field-rating-item', function() {
+				$( this ).parent().find( '.wpforms-field-rating-item' ).removeClass( 'selected hover' );
+				$( this ).parent().find( 'input:checked' ).parent().prevAll().addBack().addClass( 'selected' );
+			} );
 
 			// Rating field: toggle selected state.
 			$( document ).on( 'change', '.wpforms-field-rating-item input', function() {
@@ -1135,7 +1132,7 @@ var wpforms = window.wpforms || ( function( document, window, $ ) {
 
 			// Rating field: preselect the selected rating (from dynamic/fallback population).
 			$( function() {
-				$( '.wpforms-field-rating-item input:checked' ).change();
+				$( '.wpforms-field-rating-item input:checked' ).trigger( 'change' );
 			} );
 
 			// Checkbox/Radio/Payment checkbox: make labels keyboard-accessible.
@@ -1150,7 +1147,7 @@ var wpforms = window.wpforms || ( function( document, window, $ ) {
 
 				// Cause the input to be clicked when clicking the label.
 				if ( 13 === event.which ) {
-					$( '#' + $this.attr( 'for' ) ).click();
+					$( '#' + $this.attr( 'for' ) ).trigger( 'click' );
 				}
 			} );
 
@@ -1158,7 +1155,7 @@ var wpforms = window.wpforms || ( function( document, window, $ ) {
 			if ( window.document.documentMode ) {
 				$( document ).on( 'click', '.wpforms-image-choices-item img', function() {
 
-					$( this ).closest( 'label' ).find( 'input' ).click();
+					$( this ).closest( 'label' ).find( 'input' ).trigger( 'click' );
 				} );
 			}
 
@@ -1275,11 +1272,11 @@ var wpforms = window.wpforms || ( function( document, window, $ ) {
 				e.preventDefault();
 
 				if ( $page.hasClass( 'last' ) ) {
-					$page.closest( '.wpforms-form' ).find( '.wpforms-submit' ).click();
+					$page.closest( '.wpforms-form' ).find( '.wpforms-submit' ).trigger( 'click' );
 					return;
 				}
 
-				$page.find( '.wpforms-page-next' ).click();
+				$page.find( '.wpforms-page-next' ).trigger( 'click' );
 			} );
 
 			// Allow only numbers, minus and decimal point to be entered into the Numbers field.
@@ -1354,7 +1351,7 @@ var wpforms = window.wpforms || ( function( document, window, $ ) {
 			app.animateScrollTop( offset.top - 75, 750 ).done( function() {
 				var $error = $field.find( '.wpforms-error' ).first();
 				if ( typeof $error.focus === 'function' ) {
-					$error.focus();
+					$error.trigger( 'focus' );
 				}
 			} );
 		},
@@ -1789,7 +1786,7 @@ var wpforms = window.wpforms || ( function( document, window, $ ) {
 				amount = whole + '.' + part;
 			}
 
-			// Strip , from the amount (if set as the thousands separator)
+			// Strip , from the amount (if set as the thousand separator)
 			if ( ',' === currency.thousands_sep && ( amount.indexOf( currency.thousands_sep ) !== -1 ) ) {
 				amount = amount.replace( /,/g, '' );
 			}
@@ -1852,7 +1849,7 @@ var wpforms = window.wpforms || ( function( document, window, $ ) {
 		 * @param {string} number       Number to format.
 		 * @param {number} decimals     How many decimals should be there.
 		 * @param {string} decimalSep   What is the decimal separator.
-		 * @param {string} thousandsSep What is the thousands separator.
+		 * @param {string} thousandsSep What is the thousand separator.
 		 *
 		 * @returns {string} Formatted number.
 		 */
