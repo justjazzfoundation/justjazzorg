@@ -10,13 +10,16 @@ import type { DonationFormValues, DonationFormInputName, DonationSettings } from
 
 const isValidEmail = ( string: string ) => /\S+@\S+/.test( string );
 
-export const validateFormData = ( values: DonationFormValues, settings: DonationSettings ) => {
+export const validateFormData = (
+	values: DonationFormValues,
+	settings: Partial< DonationSettings >
+) => {
 	const errors: { [ key: string ]: string } = {};
 	if ( ! isValidEmail( values.email ) ) {
 		errors.email = __( 'Email address is invalid.', 'newspack-blocks' );
 	}
 	const { minimumDonation } = settings;
-	if ( parseFloat( values.amount ) < minimumDonation ) {
+	if ( minimumDonation && parseFloat( values.amount ) < minimumDonation ) {
 		errors.amount = sprintf(
 			/* Translators: %d is minimum donation amount set in Reader Revenue wizard or block attributes. */
 			__( 'Amount must be at least %d.', 'newspack-blocks' ),
@@ -175,7 +178,12 @@ export const computeFeeAmount = ( amount: number, feeMultiplier: number, feeStat
  */
 export const getFeeAmount = ( formElement: HTMLFormElement ) => {
 	const { feeMultiplier, feeStatic } = getSettings( formElement );
-	if ( ! feeMultiplier || ! feeStatic ) {
+	if (
+		undefined === feeMultiplier ||
+		undefined === feeStatic ||
+		isNaN( feeMultiplier ) ||
+		isNaN( feeStatic )
+	) {
 		return 0;
 	}
 	const { amount } = getDonationFormValues( formElement );

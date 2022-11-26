@@ -15,7 +15,6 @@ import 'regenerator-runtime'; // Required in WP >=5.8.
  */
 import * as utils from './utils';
 import './style.scss';
-import type { DonationSettings } from '../types';
 
 export const processStreamlinedElements = ( parentElement = document ) =>
 	[ ...parentElement.querySelectorAll( '.stripe-payment' ) ].forEach( async el => {
@@ -281,6 +280,14 @@ export const processStreamlinedElements = ( parentElement = document ) =>
 			if ( feesAmountEl ) {
 				const formValues = Object.fromEntries( new FormData( formElement ) );
 				const feeAmount = utils.getFeeAmount( formElement );
+				if ( feeAmount === 0 ) {
+					const feesAmountContainerEl: HTMLElement | null = el.querySelector(
+						'#stripe-fees-amount-container'
+					);
+					if ( feesAmountContainerEl ) {
+						feesAmountContainerEl.style.display = 'none';
+					}
+				}
 				if ( typeof formValues.donation_frequency === 'string' ) {
 					feesAmountEl.innerHTML = `(${ settings.currencySymbol }${ feeAmount.toFixed(
 						2
@@ -306,9 +313,7 @@ export const processStreamlinedElements = ( parentElement = document ) =>
 			);
 
 			const formValues = utils.getDonationFormValues( formElement );
-			const validationErrors = Object.values(
-				utils.validateFormData( formValues, settings as DonationSettings )
-			);
+			const validationErrors = Object.values( utils.validateFormData( formValues, settings ) );
 			if ( validationErrors.length > 0 ) {
 				utils.renderMessages( validationErrors, messagesEl );
 				enableForm();

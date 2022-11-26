@@ -81,6 +81,29 @@ class Campaign_Data_Utils {
 	}
 
 	/**
+	 * Is reader a former donor?
+	 *
+	 * @param object $reader_events Reader data.
+	 */
+	public static function is_former_donor( $reader_events ) {
+		$donation_related_events = array_values(
+			array_filter(
+				$reader_events,
+				function( $event ) {
+					return stripos( $event['type'], 'donation' ) !== false;
+				}
+			)
+		);
+		if ( 0 < count( $donation_related_events ) ) {
+			// The donation cancellation event must be the latest one.
+			// If they've donated again, they're not a former donor.
+			$latest_donation_related_event = $donation_related_events[0];
+			return 'donation_cancelled' === $latest_donation_related_event['type'];
+		}
+		return false;
+	}
+
+	/**
 	 * Does reader have a WP user account?
 	 *
 	 * @param object $reader_events Reader data.
@@ -116,18 +139,20 @@ class Campaign_Data_Utils {
 	 * Given a reader's data, get the total view count of singular posts.
 	 * Articles are any singular post type in Newspack sites.
 	 *
-	 * @param array $reader Reader data.
+	 * @param array $readers Reader data for all known sessions.
 	 *
 	 * @return int Total view count of singular posts.
 	 */
-	public static function get_post_view_count( $reader ) {
+	public static function get_post_view_count( $readers ) {
 		$total_view_count      = 0;
 		$non_singular_contexts = self::NON_SINGULAR_VIEW_CONTEXTS;
 
-		if ( isset( $reader['reader_data']['views'] ) ) {
-			foreach ( $reader['reader_data']['views'] as $post_type => $count ) {
-				if ( ! in_array( $post_type, $non_singular_contexts, true ) ) {
-					$total_view_count += (int) $count;
+		foreach ( $readers as $reader ) {
+			if ( isset( $reader['reader_data']['views'] ) ) {
+				foreach ( $reader['reader_data']['views'] as $post_type => $count ) {
+					if ( ! in_array( $post_type, $non_singular_contexts, true ) ) {
+						$total_view_count += (int) $count;
+					}
 				}
 			}
 		}
@@ -160,13 +185,30 @@ class Campaign_Data_Utils {
 	/**
 	 * Given a reader's data, get the view counts of each term of the given taxonomy.
 	 *
-	 * @param array  $reader Reader data.
+	 * @param array  $readers Reader data for all known sessions.
 	 * @param string $taxonomy Taxonomy to look for. Defaults to 'category'.
 	 *
 	 * @return int View counts of the given taxonomy.
 	 */
-	public static function get_term_view_counts( $reader, $taxonomy = 'category' ) {
-		return isset( $reader['reader_data'][ $taxonomy ] ) ? $reader['reader_data'][ $taxonomy ] : false;
+	public static function get_term_view_counts( $readers, $taxonomy = 'category' ) {
+		$totals = [];
+		foreach ( $readers as $reader ) {
+			if ( isset( $reader['reader_data'][ $taxonomy ] ) ) {
+				foreach ( $reader['reader_data'][ $taxonomy ] as $term => $count ) {
+					if ( ! isset( $totals[ $term ] ) ) {
+						$totals[ $term ] = 0;
+					}
+
+					$totals[ $term ] += (int) $count;
+				}
+			}
+		}
+
+		if ( empty( $totals ) ) {
+			return false;
+		}
+
+		return $totals;
 	}
 
 	/**
@@ -186,6 +228,7 @@ class Campaign_Data_Utils {
 				'is_not_subscribed'   => false,
 				'is_donor'            => false,
 				'is_not_donor'        => false,
+				'is_former_donor'     => false,
 				'has_user_account'    => false,
 				'no_user_account'     => false,
 				'referrers'           => '',
@@ -200,24 +243,25 @@ class Campaign_Data_Utils {
 	 * Given a segment and client data, decide if the prompt should be shown.
 	 *
 	 * @param object $campaign_segment Segment data.
-	 * @param string $reader Reader data for the given client ID.
+	 * @param string $readers Reader data for all known readers matching the given client ID.
 	 * @param string $reader_events Reader data for the given client ID.
 	 * @param string $referer_url URL of the page performing the API request.
 	 * @param string $page_referrer_url URL of the referrer of the frontend page that is making the API request.
 	 * @return bool Whether the prompt should be shown.
 	 */
-	public static function does_reader_match_segment( $campaign_segment, $reader, $reader_events, $referer_url = '', $page_referrer_url = '' ) {
+	public static function does_reader_match_segment( $campaign_segment, $readers, $reader_events, $referer_url = '', $page_referrer_url = '' ) {
 		$should_display              = true;
 		$is_subscriber               = self::is_subscriber( $reader_events, $referer_url );
 		$is_donor                    = self::is_donor( $reader_events );
+		$is_former_donor             = self::is_former_donor( $reader_events );
 		$has_user_account            = self::has_user_account( $reader_events );
 		$campaign_segment            = self::canonize_segment( $campaign_segment );
-		$article_views_count         = self::get_post_view_count( $reader );
+		$article_views_count         = self::get_post_view_count( $readers );
 		$article_views_count_session = self::get_post_view_count_session( $reader_events );
 
 		// Read counts for categories.
 		$favorite_category_matches_segment = false;
-		$category_view_counts              = self::get_term_view_counts( $reader );
+		$category_view_counts              = self::get_term_view_counts( $readers );
 		if ( $category_view_counts ) {
 			arsort( $category_view_counts );
 			$favorite_category_matches_segment = in_array( key( $category_view_counts ), $campaign_segment->favorite_categories );
@@ -260,6 +304,9 @@ class Campaign_Data_Utils {
 			$should_display = false;
 		}
 		if ( $campaign_segment->is_not_donor && $is_donor ) {
+			$should_display = false;
+		}
+		if ( $campaign_segment->is_former_donor && ! $is_former_donor ) {
 			$should_display = false;
 		}
 
@@ -339,5 +386,19 @@ class Campaign_Data_Utils {
 	 */
 	public static function is_above_header( $popup ) {
 		return isset( $popup->t ) && 'a' === $popup->t;
+	}
+
+	/**
+	 * Get all events types.
+	 */
+	public static function get_reader_events_types() {
+		return array_merge( self::get_protected_events_types(), [ 'user_account', 'view' ] );
+	}
+
+	/**
+	 * Get protected events types. These events are not allowed to be deleted when pruning data.
+	 */
+	public static function get_protected_events_types() {
+		return [ 'donation', 'donation_cancelled', 'subscription' ];
 	}
 }

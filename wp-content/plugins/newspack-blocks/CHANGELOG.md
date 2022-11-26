@@ -1,3 +1,71 @@
+# [1.59.0](https://github.com/Automattic/newspack-blocks/compare/v1.58.1...v1.59.0) (2022-11-14)
+
+
+### Bug Fixes
+
+* update newspack-scripts and CI orb ([#1304](https://github.com/Automattic/newspack-blocks/issues/1304)) ([25852a9](https://github.com/Automattic/newspack-blocks/commit/25852a90f121ac588dfe3b892bad433aedd5a20a))
+
+
+### Features
+
+* display newspack's author custom fields ([#1302](https://github.com/Automattic/newspack-blocks/issues/1302)) ([081f228](https://github.com/Automattic/newspack-blocks/commit/081f228f0655b36c7ab5891a7756a4259435239a)), closes [#1166](https://github.com/Automattic/newspack-blocks/issues/1166)
+
+# [1.59.0-alpha.2](https://github.com/Automattic/newspack-blocks/compare/v1.59.0-alpha.1...v1.59.0-alpha.2) (2022-11-11)
+
+
+### Bug Fixes
+
+* update newspack-scripts and CI orb ([#1304](https://github.com/Automattic/newspack-blocks/issues/1304)) ([25852a9](https://github.com/Automattic/newspack-blocks/commit/25852a90f121ac588dfe3b892bad433aedd5a20a))
+
+# [1.59.0-alpha.1](https://github.com/Automattic/newspack-blocks/compare/v1.58.1...v1.59.0-alpha.1) (2022-11-03)
+
+
+### Features
+
+* display newspack's author custom fields ([#1302](https://github.com/Automattic/newspack-blocks/issues/1302)) ([081f228](https://github.com/Automattic/newspack-blocks/commit/081f228f0655b36c7ab5891a7756a4259435239a)), closes [#1166](https://github.com/Automattic/newspack-blocks/issues/1166)
+
+## [1.58.1](https://github.com/Automattic/newspack-blocks/compare/v1.58.0...v1.58.1) (2022-10-19)
+
+
+### Bug Fixes
+
+* linter errors caused by $sponsor_classes ([#1286](https://github.com/Automattic/newspack-blocks/issues/1286)) ([21c6545](https://github.com/Automattic/newspack-blocks/commit/21c65453d66c5e279a8f258c83bf4851bb072236))
+* make sure sponsor flag previews in editor ([#1279](https://github.com/Automattic/newspack-blocks/issues/1279)) ([e63c3ab](https://github.com/Automattic/newspack-blocks/commit/e63c3ab04b0b01545f54a6c8df741e3b7f082cd8))
+
+## [1.58.1-alpha.1](https://github.com/Automattic/newspack-blocks/compare/v1.58.0...v1.58.1-alpha.1) (2022-10-06)
+
+
+### Bug Fixes
+
+* linter errors caused by $sponsor_classes ([#1286](https://github.com/Automattic/newspack-blocks/issues/1286)) ([21c6545](https://github.com/Automattic/newspack-blocks/commit/21c65453d66c5e279a8f258c83bf4851bb072236))
+* make sure sponsor flag previews in editor ([#1279](https://github.com/Automattic/newspack-blocks/issues/1279)) ([e63c3ab](https://github.com/Automattic/newspack-blocks/commit/e63c3ab04b0b01545f54a6c8df741e3b7f082cd8))
+
+# [1.58.0](https://github.com/Automattic/newspack-blocks/compare/v1.57.0...v1.58.0) (2022-09-27)
+
+
+### Bug Fixes
+
+* **donate:** handle zero fees ([744fa50](https://github.com/Automattic/newspack-blocks/commit/744fa50eb4b4c1585a078c5cfc773be1f491920a))
+* **donate:** user id handling ([29efec8](https://github.com/Automattic/newspack-blocks/commit/29efec84644b7b1ddcc2b72734b58d03c760f30c))
+
+
+### Features
+
+* **donations:** pass client metadata when creating a WC membership ([764a4e4](https://github.com/Automattic/newspack-blocks/commit/764a4e4bbcb5777ab5be7f17894907c709bf424c))
+
+# [1.58.0-alpha.1](https://github.com/Automattic/newspack-blocks/compare/v1.57.0...v1.58.0-alpha.1) (2022-09-26)
+
+
+### Bug Fixes
+
+* **donate:** handle zero fees ([744fa50](https://github.com/Automattic/newspack-blocks/commit/744fa50eb4b4c1585a078c5cfc773be1f491920a))
+* **donate:** user id handling ([29efec8](https://github.com/Automattic/newspack-blocks/commit/29efec84644b7b1ddcc2b72734b58d03c760f30c))
+
+
+### Features
+
+* **donations:** pass client metadata when creating a WC membership ([764a4e4](https://github.com/Automattic/newspack-blocks/commit/764a4e4bbcb5777ab5be7f17894907c709bf424c))
+
 # [1.57.0](https://github.com/Automattic/newspack-blocks/compare/v1.56.0...v1.57.0) (2022-09-14)
 
 
